@@ -1,4 +1,6 @@
 from flask import Flask
+import os
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -12,15 +14,15 @@ def inicio():
 <style>
 :root{
     --bg:#f2f2f7;
-    --card:#ffffff;
-    --text:#000;
-    --input:#f2f2f7;
+    --card:white;
+    --text:black;
+    --input:#f9f9fb;
 }
 
 body.dark{
     --bg:#1c1c1e;
     --card:#2c2c2e;
-    --text:#ffffff;
+    --text:white;
     --input:#3a3a3c;
 }
 
@@ -32,80 +34,85 @@ body{
     transition:.3s;
 }
 
-section{
-    background:var(--card);
-    padding:25px;
-    margin-bottom:30px;
-    border-radius:20px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.08);
-}
-
-/* DARK MODE BUTTON */
-.dark-btn{
+.dark-toggle{
     position:fixed;
     top:20px;
     right:20px;
     padding:8px 14px;
     border:none;
-    border-radius:12px;
+    border-radius:10px;
     cursor:pointer;
 }
 
-/* INPUTS SMALL + AUTO GROW */
-.auto{
-    width:80px;
-    min-width:80px;
-    padding:8px;
-    border-radius:12px;
-    border:1px solid #ccc;
-    background:var(--input);
-    transition:.2s;
+.top-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
 }
-.auto:focus{ outline:none; }
 
-/* IC GRID 3x3 */
+@media(max-width:900px){
+    .top-grid{grid-template-columns:1fr;}
+}
+
+section{
+    background:var(--card);
+    padding:25px;
+    margin-bottom:30px;
+    border-radius:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+button{
+    padding:8px 14px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#e5e5ea;
+}
+
 .ic-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
-    margin-bottom:10px;
 }
 
-button{
-    padding:8px;
-    border:none;
-    border-radius:12px;
-    background:#e5e5ea;
-    cursor:pointer;
+.auto-grow{
+    width:80px;
+    min-width:80px;
+    padding:6px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    background:var(--input);
 }
 
-button:hover{opacity:.8;}
+input:focus{outline:none;border:1px solid #007aff;}
 
-.ic-actions{
-    margin-top:10px;
-}
-
-/* FFI PREVIEW (CUADRO ROJO) */
 .preview-box{
     margin-top:20px;
     padding:25px;
-    border-radius:18px;
-    border:5px solid red;
-    background:var(--card);
+    border-radius:16px;
+    border:4px solid red;
     min-height:220px;
     white-space:pre-line;
-    font-size:20px;
+    font-size:18px;
 }
 
-strong{font-weight:700;}
+.success{ background:#34c759!important;color:white; }
+.error{ background:#ff3b30!important;color:white; }
+.proxy-green{ background:#34c759!important;color:white; }
+.proxy-red{ background:#ff3b30!important;color:white; }
+.proxy-yellow{ background:#ffcc00!important; }
 </style>
 </head>
 
 <body>
 
-<button class="dark-btn" onclick="toggleDark()">🌙 Dark</button>
+<button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
 
 <h1>Alexa Builder 🚀</h1>
+
+<div class="top-grid">
 
 <!-- IC -->
 <section>
@@ -114,49 +121,75 @@ strong{font-weight:700;}
 <div class="ic-grid">
 <button onclick="addIC('YOB')">YOB</button>
 <button onclick="addIC('@')">@</button>
-<button onclick="addIC('Mobile')">Mobile</button>
-<button onclick="addIC('OTP txt')">OTP txt</button>
-<button onclick="addIC('OTP @')">OTP @</button>
+<button onclick="addIC('Mobile Phone')">Mobile Phone</button>
+<button onclick="addIC('OTP by txt')">OTP by txt</button>
+<button onclick="addIC('OTP by @')">OTP by @</button>
 <button onclick="addIC('UCID')">UCID</button>
 </div>
 
 <div id="resultIC"></div>
 
-<div class="ic-actions">
+<div>
 <button onclick="eraseIC()">←</button>
-<button onclick="copyIC()">Copy</button>
+<button id="copyICBtn" onclick="copyIC()">Copy</button>
 <button onclick="resetIC()">Reset</button>
 </div>
 
 </section>
 
+<!-- RIGHT COLUMN -->
+<div>
+
+<section>
+<h2>Currency Converter</h2>
+<input type="number" id="amount1" value="1" oninput="convert(1)">
+<select id="currency1" onchange="convert(1)">
+<option value="USD">USD</option>
+<option value="MXN">MXN</option>
+<option value="CAD">CAD</option>
+</select>
+⇄
+<input type="number" id="amount2" oninput="convert(2)">
+<select id="currency2" onchange="convert(1)">
+<option value="MXN">MXN</option>
+<option value="USD">USD</option>
+<option value="CAD">CAD</option>
+</select>
+</section>
+
+<section>
+<h2>Date Calculator</h2>
+<input type="number" id="daysToAdd" min="0" placeholder="Days from today">
+<button onclick="calculateDate()">Calculate</button>
+<div id="resultDate"></div>
+</section>
+
+</div>
+</div>
+
 <!-- FFI -->
 <section>
 <h2>FFI</h2>
 
-<input class="auto" id="doc" placeholder="Doc" oninput="grow(this);updateFFI()"><br><br>
+<input class="auto-grow" id="docInput" placeholder="Doc" oninput="grow(this);updatePreview()">
 
+<div>
 <strong>60% Proxy</strong><br>
-<button onclick="setProxy('Yes')">Yes</button>
-<button onclick="setProxy('No')">No</button>
-<button onclick="setProxy('NA')">NA</button>
-<br><br>
+<button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
+<button id="proxyNo" onclick="setProxy('No')">No</button>
+<button id="proxyNA" onclick="setProxy('NA')">NA</button>
+</div>
 
-Docs:
-<input class="auto" id="docs" oninput="grow(this);updateFFI()">
-
-$
-<input class="auto" id="income" type="number" oninput="grow(this);updateFFI()">
-
-%
-<input class="auto" id="percent" type="number" oninput="grow(this);updateFFI()">
+Docs <input class="auto-grow" id="docsInput" oninput="grow(this);updatePreview()">
+$ <input class="auto-grow" id="incomeInput" oninput="grow(this);updatePreview()">
+% <input class="auto-grow" id="percentInput" oninput="grow(this);updatePreview()">
 
 <br><br>
 
-<input class="auto" id="report" placeholder="Report" oninput="grow(this);updateFFI()"><br><br>
-<input class="auto" id="showing" placeholder="Showing" oninput="grow(this);updateFFI()"><br><br>
-<input class="auto" id="balance" placeholder="Balance" oninput="grow(this);updateFFI()"><br><br>
-<input class="auto" id="outcome" placeholder="Outcome" oninput="grow(this);updateFFI()">
+<input class="auto-grow" id="reportInput" placeholder="Report" oninput="grow(this);updatePreview()"><br><br>
+<input class="auto-grow" id="showingInput" placeholder="Showing" oninput="grow(this);updatePreview()"><br><br>
+<input class="auto-grow" id="balanceInput" placeholder="Balance" oninput="grow(this);updatePreview()"><br><br>
+<input class="auto-grow" id="outcomeInput" placeholder="Outcome" oninput="grow(this);updatePreview()">
 
 <div class="preview-box" id="ffiPreview"></div>
 
@@ -164,53 +197,70 @@ $
 
 <script>
 
-/* DARK MODE */
-function toggleDark(){
-    document.body.classList.toggle("dark");
-}
+/* DARK */
+function toggleDark(){document.body.classList.toggle("dark");}
 
 /* AUTO GROW */
-function grow(el){
-    el.style.width = (el.value.length + 2) + "ch";
-}
+function grow(el){el.style.width=(el.value.length+2)+"ch";}
 
 /* IC */
 let icList=[];
-function addIC(v){
-    icList.push(v);
-    document.getElementById("resultIC").innerText =
-        "VID: " + icList.map(x=>x+" OK").join(" + ");
+function updateIC(){
+document.getElementById("resultIC").innerText=
+icList.length? "VID: "+icList.map(x=>x+" OK").join(" + "):"";
 }
-function eraseIC(){
-    icList.pop();
-    addIC("");
+function addIC(v){icList.push(v);updateIC();}
+function eraseIC(){icList.pop();updateIC();}
+function resetIC(){icList=[];updateIC();}
+function copyIC(){navigator.clipboard.writeText(resultIC.innerText);}
+
+/* Currency */
+const rates={USD:1,MXN:17,CAD:1.35};
+function convert(from){
+let a1=parseFloat(amount1.value)||0;
+let a2=parseFloat(amount2.value)||0;
+let c1=currency1.value;
+let c2=currency2.value;
+if(from===1){
+let usd=a1/rates[c1];
+amount2.value=(usd*rates[c2]).toFixed(2);
+}else{
+let usd=a2/rates[c2];
+amount1.value=(usd*rates[c1]).toFixed(2);
 }
-function resetIC(){
-    icList=[];
-    document.getElementById("resultIC").innerText="";
 }
-function copyIC(){
-    navigator.clipboard.writeText(document.getElementById("resultIC").innerText);
+convert(1);
+
+/* Date */
+function calculateDate(){
+let days=parseInt(daysToAdd.value);
+if(isNaN(days))return;
+let d=new Date();
+d.setDate(d.getDate()+days);
+resultDate.innerText=(d.getMonth()+1)+"/"+d.getDate();
 }
 
 /* FFI */
-let proxy="";
-
+let selectedProxy="";
 function setProxy(v){
-    proxy=v;
-    updateFFI();
+selectedProxy=v;
+["proxyYes","proxyNo","proxyNA"].forEach(id=>document.getElementById(id).classList.remove("proxy-green","proxy-red","proxy-yellow"));
+if(v==="Yes")proxyYes.classList.add("proxy-green");
+if(v==="No")proxyNo.classList.add("proxy-red");
+if(v==="NA")proxyNA.classList.add("proxy-yellow");
+updatePreview();
 }
 
-function updateFFI(){
-document.getElementById("ffiPreview").innerHTML =
+function updatePreview(){
+ffiPreview.innerHTML=
 `===========FFI===========
 
-<strong>Doc:</strong> ${doc.value}
-<strong>60% Proxy:</strong> ${docs.value} + $${income.value} + ${percent.value}%
-<strong>Report:</strong> ${report.value}
-<strong>Showing:</strong> ${showing.value}
-<strong>Balance:</strong> ${balance.value}
-<strong>Outcome:</strong> ${outcome.value}
+<strong>Doc:</strong> ${docInput.value}
+<strong>60% Proxy:</strong> ${docsInput.value} + $${incomeInput.value} + ${percentInput.value}%
+<strong>Report:</strong> ${reportInput.value}
+<strong>Showing:</strong> ${showingInput.value}
+<strong>Balance:</strong> ${balanceInput.value}
+<strong>Outcome:</strong> ${outcomeInput.value}
 
 =========================`;
 }
@@ -220,8 +270,3 @@ document.getElementById("ffiPreview").innerHTML =
 </body>
 </html>
 """
-if __name__ == "__main__":
-    app.run()
-
-
-
