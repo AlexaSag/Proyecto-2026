@@ -45,6 +45,7 @@ body{
     cursor:pointer;
     background:#007aff;
     color:white;
+    font-weight:600;
 }
 
 section{
@@ -89,12 +90,23 @@ input,select{
     background:var(--input);
     color:var(--text);
     font-size:14px;
+    width:auto;
+    min-width:80px;
+    max-width:100%;
 }
 
 input:focus,select:focus{
     outline:none;
     border:1px solid #007aff;
     background:white;
+}
+
+/* IC GRID 3x3 */
+.ic-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:15px;
 }
 
 .success{ background:#34c759!important;color:white; }
@@ -133,13 +145,18 @@ input:focus,select:focus{
 
 <section>
 <h2>IC</h2>
+
+<div class="ic-grid">
 <button onclick="addIC('YOB')">YOB</button>
 <button onclick="addIC('@')">@</button>
 <button onclick="addIC('Mobile Phone')">Mobile Phone</button>
 <button onclick="addIC('OTP by txt')">OTP by txt</button>
 <button onclick="addIC('OTP by @')">OTP by @</button>
 <button onclick="addIC('UCID')">UCID</button>
+</div>
+
 <div id="resultIC"></div>
+
 <br>
 <button onclick="eraseIC()">←</button>
 <button id="copyICBtn" onclick="copyIC()">Copy</button>
@@ -181,80 +198,49 @@ input:focus,select:focus{
 </div>
 </div>
 
-<section>
-<h2>FFI</h2>
-
-<input type="text" id="docInput" placeholder="Doc">
-
-<div>
-<strong>60% Proxy</strong><br>
-<button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
-<button id="proxyNo" onclick="setProxy('No')">No</button>
-<button id="proxyNA" onclick="setProxy('NA')">NA</button>
-</div>
-
-<br>
-
-<input type="text" id="docsInput" placeholder="Docs">
-<input type="number" id="incomeInput" placeholder="$">
-<input type="number" id="percentInput" placeholder="%">
-
-<br><br>
-
-<input type="text" id="reportInput" placeholder="Report"><br><br>
-<input type="text" id="showingInput" placeholder="Showing"><br><br>
-<input type="text" id="balanceInput" placeholder="Balance"><br><br>
-<input type="text" id="outcomeInput" placeholder="Outcome">
-
-<div class="copy-center">
-<button id="copyFFIBtn" onclick="copyFFI()">Copy FFI</button>
-<button onclick="resetFFI()">Reset</button>
-</div>
-</section>
-
-<section>
-<h2>Custom Buttons</h2>
-
-<input type="text" id="customLabel" placeholder="Button Name">
-<input type="text" id="customText" placeholder="Text to Copy">
-<button onclick="createCustom()">Create</button>
-
-<div id="customContainer"></div>
-
-<br>
-<button id="copyAllBtn" onclick="copyAllCustom()">Copy All</button>
-<button onclick="resetCustom()">Reset</button>
-</section>
-
 <script>
 
 /* DARK MODE */
+const darkBtn = document.querySelector(".dark-toggle");
+
+function updateDarkButton(){
+    darkBtn.innerHTML = document.body.classList.contains("dark") ? "🌞 Light" : "🌙 Dark";
+}
+
 function toggleDark(){
     document.body.classList.toggle("dark");
-    localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    updateDarkButton();
 }
 
-if(localStorage.getItem("darkMode") === "true"){
-    document.body.classList.add("dark");
-}
+updateDarkButton();
 
-/* TU CÓDIGO ORIGINAL SIGUE IGUAL */
+/* AUTO RESIZE INPUTS */
+document.querySelectorAll("input[type='text'], input[type='number']").forEach(input=>{
+    function resize(){
+        input.style.width = "auto";
+        input.style.width = (input.scrollWidth + 10) + "px";
+    }
+    input.addEventListener("input", resize);
+    resize();
+});
 
+/* DATE ENTER */
+daysToAdd.addEventListener("keydown", function(e){
+    if(e.key==="Enter"){ calculateDate(); }
+});
+
+/* IC */
 let icList=[];
 function updateIC(){
-if(icList.length===0){document.getElementById("resultIC").innerText="";return;}
-document.getElementById("resultIC").innerText="VID: "+icList.map(x=>x+" OK").join(" + ");
+if(icList.length===0){resultIC.innerText="";return;}
+resultIC.innerText="VID: "+icList.map(x=>x+" OK").join(" + ");
 }
 function addIC(v){icList.push(v);updateIC();}
 function eraseIC(){icList.pop();updateIC();}
 function resetIC(){icList=[];updateIC();}
-function copyIC(){
-let btn=document.getElementById("copyICBtn");
-navigator.clipboard.writeText(document.getElementById("resultIC").innerText)
-.then(()=>{btn.classList.add("success");setTimeout(()=>btn.classList.remove("success"),800);})
-.catch(()=>{btn.classList.add("error");setTimeout(()=>btn.classList.remove("error"),800);});
-}
+function copyIC(){navigator.clipboard.writeText(resultIC.innerText);}
 
+/* CURRENCY */
 const rates={USD:1,MXN:17,CAD:1.35};
 function convert(from){
 let a1=parseFloat(amount1.value)||0;
@@ -277,6 +263,7 @@ convert(1);
 }
 convert(1);
 
+/* DATE */
 function calculateDate(){
 let days=parseInt(daysToAdd.value);
 if(isNaN(days)||days<0)return;
@@ -289,53 +276,10 @@ daysToAdd.value=days;
 calculateDate();
 }
 
-let selectedProxy="";
-function setProxy(value){
-selectedProxy=value;
-["proxyYes","proxyNo","proxyNA"].forEach(id=>document.getElementById(id).classList.remove("proxy-green","proxy-red","proxy-yellow"));
-if(value==="Yes")proxyYes.classList.add("proxy-green");
-if(value==="No")proxyNo.classList.add("proxy-red");
-if(value==="NA")proxyNA.classList.add("proxy-yellow");
-}
-
-function copyFFI(){
-let text=`===========FFI===========
-Doc: ${docInput.value}
-60% Proxy: ${selectedProxy} ; ${docsInput.value} + $${incomeInput.value} + ${percentInput.value}%
-Report: ${reportInput.value}
-Showing: ${showingInput.value}
-Balance: ${balanceInput.value}
-Outcome: ${outcomeInput.value}
-=======================`;
-navigator.clipboard.writeText(text);
-}
-
-function resetFFI(){
-selectedProxy="";
-["docInput","docsInput","incomeInput","percentInput","reportInput","showingInput","balanceInput","outcomeInput"]
-.forEach(id=>document.getElementById(id).value="");
-}
-
-let customList=[];
-function createCustom(){
-let label=customLabel.value;
-let text=customText.value;
-if(!label||!text)return;
-let btn=document.createElement("button");
-btn.className="custom-btn";
-btn.innerText=label;
-btn.onclick=function(){customList.push(text);navigator.clipboard.writeText(text);};
-customContainer.appendChild(btn);
-customLabel.value="";customText.value="";
-}
-function copyAllCustom(){
-navigator.clipboard.writeText(customList.join(" + "));
-}
-function resetCustom(){
-customList=[];customContainer.innerHTML="";
-}
-
 </script>
 </body>
 </html>
 """
+
+if __name__ == "__main__":
+    app.run(debug=True)
