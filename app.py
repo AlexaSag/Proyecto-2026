@@ -1,4 +1,6 @@
 from flask import Flask
+import os
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -10,186 +12,341 @@ def inicio():
 <title>Alexa Builder</title>
 
 <style>
-:root{
-    --bg:#f2f2f7;
-    --card:white;
-    --text:#000;
-    --input:#f9f9fb;
-}
-
-body.dark{
-    --bg:#1c1c1e;
-    --card:#2c2c2e;
-    --text:#fff;
-    --input:#3a3a3c;
-}
-
 body{
     font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-    background:var(--bg);
-    color:var(--text);
+    background:#f2f2f7;
     padding:30px;
-    transition:.3s;
+}
+
+/* GRID SUPERIOR */
+.top-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+    align-items:start;
+}
+
+@media(max-width:900px){
+    .top-grid{
+        grid-template-columns:1fr;
+    }
 }
 
 section{
-    background:var(--card);
+    background:white;
     padding:25px;
     margin-bottom:30px;
     border-radius:18px;
     box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
-/* DARK BUTTON */
-.dark-toggle{
-    position:fixed;
-    top:20px;
-    right:20px;
-    padding:8px 14px;
-    border-radius:10px;
-    border:none;
-    cursor:pointer;
-}
+h2{ margin-bottom:15px; }
 
-/* IC GRID 3x3 */
-.ic-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-
-/* INPUT AUTO GROW */
-.auto-grow{
-    min-width:80px;
-    width:80px;
-    padding:6px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    background:var(--input);
-    transition:.2s;
-}
-.auto-grow:focus{
-    outline:none;
-}
 button{
-    padding:8px 12px;
+    padding:8px 14px;
+    margin:5px;
     border:none;
     border-radius:10px;
     cursor:pointer;
     background:#e5e5ea;
+    transition:0.2s;
 }
 
-/* FFI PREVIEW */
-.ffi-preview{
-    margin-top:20px;
+button:hover{ opacity:0.85; }
+
+input,select{
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #d1d1d6;
+    background:#f9f9fb;
+    font-size:14px;
+}
+
+input:focus,select:focus{
+    outline:none;
+    border:1px solid #007aff;
+    background:white;
+}
+
+.success{ background:#34c759!important;color:white; }
+.error{ background:#ff3b30!important;color:white; }
+
+.proxy-green{ background:#34c759!important;color:white; }
+.proxy-red{ background:#ff3b30!important;color:white; }
+.proxy-yellow{ background:#ffcc00!important; }
+
+.ffi-box{
+    background:white;
     padding:20px;
     border-radius:16px;
-    border:4px solid red;
-    min-height:200px;
-    white-space:pre-line;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
-strong{font-weight:700;}
+
+.ffi-row-bottom{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:20px;
+    margin-top:15px;
+}
+
+.copy-center{
+    text-align:center;
+    margin-top:30px;
+}
+
+.custom-btn{
+    background:#007aff;
+    color:white;
+    position:relative;
+    margin:6px;
+}
+
+.delete-x{
+    position:absolute;
+    right:6px;
+    top:2px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.converter{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.swap{
+    font-size:18px;
+    cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
-<button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
-
 <h1>Alexa Builder 🚀</h1>
+
+<div class="top-grid">
 
 <!-- IC -->
 <section>
 <h2>IC</h2>
-
-<div class="ic-grid">
 <button onclick="addIC('YOB')">YOB</button>
 <button onclick="addIC('@')">@</button>
 <button onclick="addIC('Mobile Phone')">Mobile Phone</button>
 <button onclick="addIC('OTP by txt')">OTP by txt</button>
 <button onclick="addIC('OTP by @')">OTP by @</button>
 <button onclick="addIC('UCID')">UCID</button>
-</div>
-
 <div id="resultIC"></div>
+<br>
+<button onclick="eraseIC()">←</button>
+<button id="copyICBtn" onclick="copyIC()">Copy</button>
+<button onclick="resetIC()">Reset</button>
 </section>
+
+<!-- RIGHT COLUMN -->
+<div>
+
+<!-- Currency -->
+<section>
+<h2>Currency Converter</h2>
+<div class="converter">
+<input type="number" id="amount1" value="1" oninput="convert(1)">
+<select id="currency1" onchange="convert(1)">
+<option value="USD">USD</option>
+<option value="MXN">MXN</option>
+<option value="CAD">CAD</option>
+</select>
+
+<span class="swap" onclick="swapCurrencies()">⇄</span>
+
+<input type="number" id="amount2" oninput="convert(2)">
+<select id="currency2" onchange="convert(1)">
+<option value="MXN">MXN</option>
+<option value="USD">USD</option>
+<option value="CAD">CAD</option>
+</select>
+</div>
+</section>
+
+<!-- DATE -->
+<section>
+<h2>Date Calculator</h2>
+<input type="number" id="daysToAdd" min="0" placeholder="Days from today">
+<button onclick="calculateDate()">Calculate</button>
+<button onclick="quickAdd(18)">+18</button>
+<button onclick="quickAdd(30)">+30</button>
+<div id="resultDate"></div>
+</section>
+
+</div>
+</div>
 
 <!-- FFI -->
 <section>
 <h2>FFI</h2>
 
-<input class="auto-grow" id="docInput" placeholder="Doc" oninput="grow(this);updatePreview()"><br><br>
+<input type="text" id="docInput" placeholder="Doc">
 
+<div class="ffi-row-bottom">
+
+<div>
 <strong>60% Proxy</strong><br>
-<button onclick="setProxy('Yes')">Yes</button>
-<button onclick="setProxy('No')">No</button>
-<button onclick="setProxy('NA')">NA</button>
-<br><br>
+<button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
+<button id="proxyNo" onclick="setProxy('No')">No</button>
+<button id="proxyNA" onclick="setProxy('NA')">NA</button>
+</div>
 
-Docs:
-<input class="auto-grow" id="docsInput" oninput="grow(this);updatePreview()">
+<div>
+<strong>Docs</strong><br>
+<input type="text" id="docsInput">
+</div>
 
-$
-<input class="auto-grow" id="incomeInput" oninput="grow(this);updatePreview()">
+<div>
+<strong>$</strong><br>
+<input type="number" id="incomeInput">
+</div>
 
-%
-<input class="auto-grow" id="percentInput" oninput="grow(this);updatePreview()">
+<div>
+<strong>%</strong><br>
+<input type="number" id="percentInput">
+</div>
 
-<br><br>
+</div>
 
-<input class="auto-grow" id="reportInput" placeholder="Report" oninput="grow(this);updatePreview()"><br><br>
-<input class="auto-grow" id="showingInput" placeholder="Showing" oninput="grow(this);updatePreview()"><br><br>
-<input class="auto-grow" id="balanceInput" placeholder="Balance" oninput="grow(this);updatePreview()"><br><br>
-<input class="auto-grow" id="outcomeInput" placeholder="Outcome" oninput="grow(this);updatePreview()">
+<br>
+<input type="text" id="reportInput" placeholder="Report"><br><br>
+<input type="text" id="showingInput" placeholder="Showing"><br><br>
+<input type="text" id="balanceInput" placeholder="Balance"><br><br>
+<input type="text" id="outcomeInput" placeholder="Outcome">
 
-<div class="ffi-preview" id="ffiPreview"></div>
+<div class="copy-center">
+<button id="copyFFIBtn" onclick="copyFFI()">Copy FFI</button>
+<button onclick="resetFFI()">Reset</button>
+</div>
+</section>
 
+<!-- CUSTOM -->
+<section>
+<h2>Custom Buttons</h2>
+
+<input type="text" id="customLabel" placeholder="Button Name">
+<input type="text" id="customText" placeholder="Text to Copy">
+<button onclick="createCustom()">Create</button>
+
+<div id="customContainer"></div>
+
+<br>
+<button id="copyAllBtn" onclick="copyAllCustom()">Copy All</button>
+<button onclick="resetCustom()">Reset</button>
 </section>
 
 <script>
 
-/* DARK MODE */
-function toggleDark(){
-    document.body.classList.toggle("dark");
-}
-
 /* IC */
 let icList=[];
-function addIC(v){
-    icList.push(v);
-    document.getElementById("resultIC").innerText=
-        "VID: "+icList.map(x=>x+" OK").join(" + ");
+function updateIC(){
+if(icList.length===0){document.getElementById("resultIC").innerText="";return;}
+document.getElementById("resultIC").innerText="VID: "+icList.map(x=>x+" OK").join(" + ");
+}
+function addIC(v){icList.push(v);updateIC();}
+function eraseIC(){icList.pop();updateIC();}
+function resetIC(){icList=[];updateIC();}
+function copyIC(){
+let btn=document.getElementById("copyICBtn");
+navigator.clipboard.writeText(document.getElementById("resultIC").innerText)
+.then(()=>{btn.classList.add("success");setTimeout(()=>btn.classList.remove("success"),800);})
+.catch(()=>{btn.classList.add("error");setTimeout(()=>btn.classList.remove("error"),800);});
 }
 
-/* INPUT GROW */
-function grow(input){
-    input.style.width = (input.value.length + 2) + "ch";
+/* CURRENCY */
+const rates={USD:1,MXN:17,CAD:1.35};
+function convert(from){
+let a1=parseFloat(document.getElementById("amount1").value)||0;
+let a2=parseFloat(document.getElementById("amount2").value)||0;
+let c1=document.getElementById("currency1").value;
+let c2=document.getElementById("currency2").value;
+if(from===1){
+let usd=a1/rates[c1];
+document.getElementById("amount2").value=(usd*rates[c2]).toFixed(2);
+}else{
+let usd=a2/rates[c2];
+document.getElementById("amount1").value=(usd*rates[c1]).toFixed(2);
+}
+}
+function swapCurrencies(){
+let c1=document.getElementById("currency1");
+let c2=document.getElementById("currency2");
+let temp=c1.value;c1.value=c2.value;c2.value=temp;
+convert(1);
+}
+convert(1);
+
+/* DATE */
+function calculateDate(){
+let days=parseInt(document.getElementById("daysToAdd").value);
+if(isNaN(days)||days<0)return;
+let today=new Date();
+today.setDate(today.getDate()+days);
+document.getElementById("resultDate").innerText=
+(today.getMonth()+1)+"/"+today.getDate();
+}
+function quickAdd(days){
+document.getElementById("daysToAdd").value=days;
+calculateDate();
 }
 
 /* FFI */
 let selectedProxy="";
-function setProxy(v){
-    selectedProxy=v;
-    updatePreview();
+function setProxy(value){
+selectedProxy=value;
+["proxyYes","proxyNo","proxyNA"].forEach(id=>document.getElementById(id).classList.remove("proxy-green","proxy-red","proxy-yellow"));
+if(value==="Yes")document.getElementById("proxyYes").classList.add("proxy-green");
+if(value==="No")document.getElementById("proxyNo").classList.add("proxy-red");
+if(value==="NA")document.getElementById("proxyNA").classList.add("proxy-yellow");
+}
+function copyFFI(){
+let btn=document.getElementById("copyFFIBtn");
+let text=`===========FFI===========
+Doc: ${docInput.value}
+60% Proxy: ${selectedProxy} ; ${docsInput.value} + $${incomeInput.value} + ${percentInput.value}%
+Report: ${reportInput.value}
+Showing: ${showingInput.value}
+Balance: ${balanceInput.value}
+Outcome: ${outcomeInput.value}
+=======================`;
+navigator.clipboard.writeText(text)
+.then(()=>{btn.classList.add("success");setTimeout(()=>btn.classList.remove("success"),800);})
+.catch(()=>{btn.classList.add("error");setTimeout(()=>btn.classList.remove("error"),800);});
+}
+function resetFFI(){
+selectedProxy="";
+["docInput","docsInput","incomeInput","percentInput","reportInput","showingInput","balanceInput","outcomeInput"]
+.forEach(id=>document.getElementById(id).value="");
 }
 
-function updatePreview(){
-    document.getElementById("ffiPreview").innerHTML =
-`<strong>Doc:</strong> ${docInput.value}
-
-<strong>60% Proxy:</strong> ${selectedProxy}
-<strong>Docs:</strong> ${docsInput.value}
-<strong>$:</strong> ${incomeInput.value}
-<strong>%:</strong> ${percentInput.value}
-
-<strong>Report:</strong> ${reportInput.value}
-<strong>Showing:</strong> ${showingInput.value}
-<strong>Balance:</strong> ${balanceInput.value}
-<strong>Outcome:</strong> ${outcomeInput.value}`;
+/* CUSTOM */
+let customList=[];
+function createCustom(){
+let label=customLabel.value;
+let text=customText.value;
+if(!label||!text)return;
+let btn=document.createElement("button");
+btn.className="custom-btn";
+btn.innerText=label;
+btn.onclick=function(){customList.push(text);navigator.clipboard.writeText(text);};
+customContainer.appendChild(btn);
+customLabel.value="";customText.value="";
+}
+function copyAllCustom(){
+navigator.clipboard.writeText(customList.join(" + "));
+}
+function resetCustom(){
+customList=[];customContainer.innerHTML="";
 }
 
 </script>
-
 </body>
 </html>
-""" 
+"""
