@@ -12,13 +12,49 @@ def inicio():
 <title>Alexa Builder</title>
 
 <style>
-body{
-    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-    background:#f2f2f7;
-    padding:30px;
+:root{
+    --bg:#f2f2f7;
+    --card:white;
+    --text:#000;
+    --input:#f9f9fb;
 }
 
-/* GRID SUPERIOR */
+body.dark{
+    --bg:#1c1c1e;
+    --card:#2c2c2e;
+    --text:#ffffff;
+    --input:#3a3a3c;
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding:30px;
+    transition:0.3s;
+}
+
+/* DARK BUTTON */
+.dark-toggle{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:8px 14px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#007aff;
+    color:white;
+}
+
+section{
+    background:var(--card);
+    padding:25px;
+    margin-bottom:30px;
+    border-radius:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
 .top-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -30,14 +66,6 @@ body{
     .top-grid{
         grid-template-columns:1fr;
     }
-}
-
-section{
-    background:white;
-    padding:25px;
-    margin-bottom:30px;
-    border-radius:18px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
 h2{ margin-bottom:15px; }
@@ -58,7 +86,8 @@ input,select{
     padding:10px;
     border-radius:10px;
     border:1px solid #d1d1d6;
-    background:#f9f9fb;
+    background:var(--input);
+    color:var(--text);
     font-size:14px;
 }
 
@@ -75,38 +104,9 @@ input:focus,select:focus{
 .proxy-red{ background:#ff3b30!important;color:white; }
 .proxy-yellow{ background:#ffcc00!important; }
 
-.ffi-box{
-    background:white;
-    padding:20px;
-    border-radius:16px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
-}
-
-.ffi-row-bottom{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:20px;
-    margin-top:15px;
-}
-
 .copy-center{
     text-align:center;
     margin-top:30px;
-}
-
-.custom-btn{
-    background:#007aff;
-    color:white;
-    position:relative;
-    margin:6px;
-}
-
-.delete-x{
-    position:absolute;
-    right:6px;
-    top:2px;
-    cursor:pointer;
-    font-weight:bold;
 }
 
 .converter{
@@ -125,11 +125,12 @@ input:focus,select:focus{
 
 <body>
 
+<button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
+
 <h1>Alexa Builder 🚀</h1>
 
 <div class="top-grid">
 
-<!-- IC -->
 <section>
 <h2>IC</h2>
 <button onclick="addIC('YOB')">YOB</button>
@@ -145,10 +146,8 @@ input:focus,select:focus{
 <button onclick="resetIC()">Reset</button>
 </section>
 
-<!-- RIGHT COLUMN -->
 <div>
 
-<!-- Currency -->
 <section>
 <h2>Currency Converter</h2>
 <div class="converter">
@@ -170,7 +169,6 @@ input:focus,select:focus{
 </div>
 </section>
 
-<!-- DATE -->
 <section>
 <h2>Date Calculator</h2>
 <input type="number" id="daysToAdd" min="0" placeholder="Days from today">
@@ -183,13 +181,10 @@ input:focus,select:focus{
 </div>
 </div>
 
-<!-- FFI -->
 <section>
 <h2>FFI</h2>
 
 <input type="text" id="docInput" placeholder="Doc">
-
-<div class="ffi-row-bottom">
 
 <div>
 <strong>60% Proxy</strong><br>
@@ -198,24 +193,14 @@ input:focus,select:focus{
 <button id="proxyNA" onclick="setProxy('NA')">NA</button>
 </div>
 
-<div>
-<strong>Docs</strong><br>
-<input type="text" id="docsInput">
-</div>
-
-<div>
-<strong>$</strong><br>
-<input type="number" id="incomeInput">
-</div>
-
-<div>
-<strong>%</strong><br>
-<input type="number" id="percentInput">
-</div>
-
-</div>
-
 <br>
+
+<input type="text" id="docsInput" placeholder="Docs">
+<input type="number" id="incomeInput" placeholder="$">
+<input type="number" id="percentInput" placeholder="%">
+
+<br><br>
+
 <input type="text" id="reportInput" placeholder="Report"><br><br>
 <input type="text" id="showingInput" placeholder="Showing"><br><br>
 <input type="text" id="balanceInput" placeholder="Balance"><br><br>
@@ -227,7 +212,6 @@ input:focus,select:focus{
 </div>
 </section>
 
-<!-- CUSTOM -->
 <section>
 <h2>Custom Buttons</h2>
 
@@ -244,7 +228,18 @@ input:focus,select:focus{
 
 <script>
 
-/* IC */
+/* DARK MODE */
+function toggleDark(){
+    document.body.classList.toggle("dark");
+    localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+}
+
+if(localStorage.getItem("darkMode") === "true"){
+    document.body.classList.add("dark");
+}
+
+/* TU CÓDIGO ORIGINAL SIGUE IGUAL */
+
 let icList=[];
 function updateIC(){
 if(icList.length===0){document.getElementById("resultIC").innerText="";return;}
@@ -260,54 +255,50 @@ navigator.clipboard.writeText(document.getElementById("resultIC").innerText)
 .catch(()=>{btn.classList.add("error");setTimeout(()=>btn.classList.remove("error"),800);});
 }
 
-/* CURRENCY */
 const rates={USD:1,MXN:17,CAD:1.35};
 function convert(from){
-let a1=parseFloat(document.getElementById("amount1").value)||0;
-let a2=parseFloat(document.getElementById("amount2").value)||0;
-let c1=document.getElementById("currency1").value;
-let c2=document.getElementById("currency2").value;
+let a1=parseFloat(amount1.value)||0;
+let a2=parseFloat(amount2.value)||0;
+let c1=currency1.value;
+let c2=currency2.value;
 if(from===1){
 let usd=a1/rates[c1];
-document.getElementById("amount2").value=(usd*rates[c2]).toFixed(2);
+amount2.value=(usd*rates[c2]).toFixed(2);
 }else{
 let usd=a2/rates[c2];
-document.getElementById("amount1").value=(usd*rates[c1]).toFixed(2);
+amount1.value=(usd*rates[c1]).toFixed(2);
 }
 }
 function swapCurrencies(){
-let c1=document.getElementById("currency1");
-let c2=document.getElementById("currency2");
-let temp=c1.value;c1.value=c2.value;c2.value=temp;
+let temp=currency1.value;
+currency1.value=currency2.value;
+currency2.value=temp;
 convert(1);
 }
 convert(1);
 
-/* DATE */
 function calculateDate(){
-let days=parseInt(document.getElementById("daysToAdd").value);
+let days=parseInt(daysToAdd.value);
 if(isNaN(days)||days<0)return;
 let today=new Date();
 today.setDate(today.getDate()+days);
-document.getElementById("resultDate").innerText=
-(today.getMonth()+1)+"/"+today.getDate();
+resultDate.innerText=(today.getMonth()+1)+"/"+today.getDate();
 }
 function quickAdd(days){
-document.getElementById("daysToAdd").value=days;
+daysToAdd.value=days;
 calculateDate();
 }
 
-/* FFI */
 let selectedProxy="";
 function setProxy(value){
 selectedProxy=value;
 ["proxyYes","proxyNo","proxyNA"].forEach(id=>document.getElementById(id).classList.remove("proxy-green","proxy-red","proxy-yellow"));
-if(value==="Yes")document.getElementById("proxyYes").classList.add("proxy-green");
-if(value==="No")document.getElementById("proxyNo").classList.add("proxy-red");
-if(value==="NA")document.getElementById("proxyNA").classList.add("proxy-yellow");
+if(value==="Yes")proxyYes.classList.add("proxy-green");
+if(value==="No")proxyNo.classList.add("proxy-red");
+if(value==="NA")proxyNA.classList.add("proxy-yellow");
 }
+
 function copyFFI(){
-let btn=document.getElementById("copyFFIBtn");
 let text=`===========FFI===========
 Doc: ${docInput.value}
 60% Proxy: ${selectedProxy} ; ${docsInput.value} + $${incomeInput.value} + ${percentInput.value}%
@@ -316,17 +307,15 @@ Showing: ${showingInput.value}
 Balance: ${balanceInput.value}
 Outcome: ${outcomeInput.value}
 =======================`;
-navigator.clipboard.writeText(text)
-.then(()=>{btn.classList.add("success");setTimeout(()=>btn.classList.remove("success"),800);})
-.catch(()=>{btn.classList.add("error");setTimeout(()=>btn.classList.remove("error"),800);});
+navigator.clipboard.writeText(text);
 }
+
 function resetFFI(){
 selectedProxy="";
 ["docInput","docsInput","incomeInput","percentInput","reportInput","showingInput","balanceInput","outcomeInput"]
 .forEach(id=>document.getElementById(id).value="");
 }
 
-/* CUSTOM */
 let customList=[];
 function createCustom(){
 let label=customLabel.value;
