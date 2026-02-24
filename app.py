@@ -13,100 +13,88 @@ def inicio():
 
 <style>
 :root{
-    --bg:#f2f2f7;
-    --card:white;
-    --text:#000;
-    --input:#f9f9fb;
+--bg:#f2f2f7;
+--card:white;
+--text:#000;
+--input:#f9f9fb;
 }
 
 body.dark{
-    --bg:#1c1c1e;
-    --card:#2c2c2e;
-    --text:#ffffff;
-    --input:#3a3a3c;
+--bg:#1c1c1e;
+--card:#2c2c2e;
+--text:#ffffff;
+--input:#3a3a3c;
 }
 
 body{
-    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    padding:30px;
-    transition:0.3s;
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:var(--bg);
+color:var(--text);
+padding:30px;
+transition:0.3s;
 }
 
 /* DARK BUTTON */
 .dark-toggle{
-    position:fixed;
-    top:20px;
-    right:20px;
-    padding:8px 14px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#007aff;
-    color:white;
-    font-weight:600;
+position:fixed;
+top:20px;
+right:20px;
+padding:8px 14px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#007aff;
+color:white;
 }
 
 section{
-    background:var(--card);
-    padding:25px;
-    margin-bottom:30px;
-    border-radius:18px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+background:var(--card);
+padding:25px;
+margin-bottom:30px;
+border-radius:18px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
 .top-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:30px;
-    align-items:start;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+align-items:start;
 }
 
 @media(max-width:900px){
-    .top-grid{
-        grid-template-columns:1fr;
-    }
+.top-grid{
+grid-template-columns:1fr;
+}
 }
 
 h2{ margin-bottom:15px; }
 
 button{
-    padding:8px 14px;
-    margin:5px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#e5e5ea;
-    transition:0.2s;
+padding:8px 14px;
+margin:5px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#e5e5ea;
+transition:0.2s;
 }
 
 button:hover{ opacity:0.85; }
 
 input,select{
-    padding:10px;
-    border-radius:10px;
-    border:1px solid #d1d1d6;
-    background:var(--input);
-    color:var(--text);
-    font-size:14px;
-    width:auto;
-    min-width:80px;
-    max-width:100%;
+padding:10px;
+border-radius:10px;
+border:1px solid #d1d1d6;
+background:var(--input);
+color:var(--text);
+font-size:14px;
 }
 
 input:focus,select:focus{
-    outline:none;
-    border:1px solid #007aff;
-    background:white;
-}
-
-/* IC GRID 3x3 */
-.ic-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-bottom:15px;
+outline:none;
+border:1px solid #007aff;
+background:white;
 }
 
 .success{ background:#34c759!important;color:white; }
@@ -117,20 +105,20 @@ input:focus,select:focus{
 .proxy-yellow{ background:#ffcc00!important; }
 
 .copy-center{
-    text-align:center;
-    margin-top:30px;
+text-align:center;
+margin-top:30px;
 }
 
 .converter{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
+display:flex;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
 }
 
 .swap{
-    font-size:18px;
-    cursor:pointer;
+font-size:18px;
+cursor:pointer;
 }
 </style>
 </head>
@@ -145,18 +133,13 @@ input:focus,select:focus{
 
 <section>
 <h2>IC</h2>
-
-<div class="ic-grid">
 <button onclick="addIC('YOB')">YOB</button>
 <button onclick="addIC('@')">@</button>
 <button onclick="addIC('Mobile Phone')">Mobile Phone</button>
 <button onclick="addIC('OTP by txt')">OTP by txt</button>
 <button onclick="addIC('OTP by @')">OTP by @</button>
 <button onclick="addIC('UCID')">UCID</button>
-</div>
-
 <div id="resultIC"></div>
-
 <br>
 <button onclick="eraseIC()">←</button>
 <button id="copyICBtn" onclick="copyIC()">Copy</button>
@@ -198,49 +181,84 @@ input:focus,select:focus{
 </div>
 </div>
 
+<!-- ================= FFI ================= -->
+
+<section>
+<h2>FFI</h2>
+
+<input type="text" id="docInput" placeholder="Doc">
+
+<div>
+<strong>60% Proxy</strong><br>
+<button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
+<button id="proxyNo" onclick="setProxy('No')">No</button>
+<button id="proxyNA" onclick="setProxy('NA')">NA</button>
+</div>
+
+<br>
+
+<input type="text" id="docsInput" placeholder="Docs">
+<input type="number" id="incomeInput" placeholder="$">
+<input type="number" id="percentInput" placeholder="%">
+
+<br><br>
+
+<input type="text" id="reportInput" placeholder="Report"><br><br>
+<input type="text" id="showingInput" placeholder="Showing"><br><br>
+<input type="text" id="balanceInput" placeholder="Balance"><br><br>
+<input type="text" id="outcomeInput" placeholder="Outcome">
+
+<div class="copy-center">
+<button id="copyFFIBtn" onclick="copyFFI()">Copy FFI</button>
+<button onclick="resetFFI()">Reset</button>
+</div>
+</section>
+
+<!-- ================= CUSTOM BUTTONS ================= -->
+
+<section>
+<h2>Custom Buttons</h2>
+
+<input type="text" id="customLabel" placeholder="Button Name">
+<input type="text" id="customText" placeholder="Text to Copy">
+<button onclick="createCustom()">Create</button>
+
+<div id="customContainer"></div>
+
+<br>
+<button id="copyAllBtn" onclick="copyAllCustom()">Copy All</button>
+<button onclick="resetCustom()">Reset</button>
+</section>
+
 <script>
 
 /* DARK MODE */
-const darkBtn = document.querySelector(".dark-toggle");
-
-function updateDarkButton(){
-    darkBtn.innerHTML = document.body.classList.contains("dark") ? "🌞 Light" : "🌙 Dark";
-}
-
 function toggleDark(){
-    document.body.classList.toggle("dark");
-    updateDarkButton();
+document.body.classList.toggle("dark");
+localStorage.setItem("darkMode", document.body.classList.contains("dark"));
 }
 
-updateDarkButton();
-
-/* AUTO RESIZE INPUTS */
-document.querySelectorAll("input[type='text'], input[type='number']").forEach(input=>{
-    function resize(){
-        input.style.width = "auto";
-        input.style.width = (input.scrollWidth + 10) + "px";
-    }
-    input.addEventListener("input", resize);
-    resize();
-});
-
-/* DATE ENTER */
-daysToAdd.addEventListener("keydown", function(e){
-    if(e.key==="Enter"){ calculateDate(); }
-});
+if(localStorage.getItem("darkMode") === "true"){
+document.body.classList.add("dark");
+}
 
 /* IC */
 let icList=[];
 function updateIC(){
-if(icList.length===0){resultIC.innerText="";return;}
-resultIC.innerText="VID: "+icList.map(x=>x+" OK").join(" + ");
+if(icList.length===0){document.getElementById("resultIC").innerText="";return;}
+document.getElementById("resultIC").innerText="VID: "+icList.map(x=>x+" OK").join(" + ");
 }
 function addIC(v){icList.push(v);updateIC();}
 function eraseIC(){icList.pop();updateIC();}
 function resetIC(){icList=[];updateIC();}
-function copyIC(){navigator.clipboard.writeText(resultIC.innerText);}
+function copyIC(){
+let btn=document.getElementById("copyICBtn");
+navigator.clipboard.writeText(document.getElementById("resultIC").innerText)
+.then(()=>{btn.classList.add("success");setTimeout(()=>btn.classList.remove("success"),800);})
+.catch(()=>{btn.classList.add("error");setTimeout(()=>btn.classList.remove("error"),800);});
+}
 
-/* CURRENCY */
+/* Currency */
 const rates={USD:1,MXN:17,CAD:1.35};
 function convert(from){
 let a1=parseFloat(amount1.value)||0;
@@ -263,7 +281,7 @@ convert(1);
 }
 convert(1);
 
-/* DATE */
+/* Date */
 function calculateDate(){
 let days=parseInt(daysToAdd.value);
 if(isNaN(days)||days<0)return;
@@ -276,7 +294,55 @@ daysToAdd.value=days;
 calculateDate();
 }
 
+/* FFI */
+let selectedProxy="";
+function setProxy(value){
+selectedProxy=value;
+["proxyYes","proxyNo","proxyNA"].forEach(id=>document.getElementById(id).classList.remove("proxy-green","proxy-red","proxy-yellow"));
+if(value==="Yes")proxyYes.classList.add("proxy-green");
+if(value==="No")proxyNo.classList.add("proxy-red");
+if(value==="NA")proxyNA.classList.add("proxy-yellow");
+}
+
+function copyFFI(){
+let text=`===========FFI===========
+Doc: ${docInput.value}
+60% Proxy: ${selectedProxy} ; ${docsInput.value} + $${incomeInput.value} + ${percentInput.value}%
+Report: ${reportInput.value}
+Showing: ${showingInput.value}
+Balance: ${balanceInput.value}
+Outcome: ${outcomeInput.value}
+=======================`;
+navigator.clipboard.writeText(text);
+}
+
+function resetFFI(){
+selectedProxy="";
+["docInput","docsInput","incomeInput","percentInput","reportInput","showingInput","balanceInput","outcomeInput"]
+.forEach(id=>document.getElementById(id).value="");
+}
+
+/* Custom Buttons */
+let customList=[];
+function createCustom(){
+let label=customLabel.value;
+let text=customText.value;
+if(!label||!text)return;
+let btn=document.createElement("button");
+btn.innerText=label;
+btn.onclick=function(){customList.push(text);navigator.clipboard.writeText(text);};
+customContainer.appendChild(btn);
+customLabel.value="";customText.value="";
+}
+function copyAllCustom(){
+navigator.clipboard.writeText(customList.join(" + "));
+}
+function resetCustom(){
+customList=[];customContainer.innerHTML="";
+}
+
 </script>
 </body>
 </html>
 """
+
