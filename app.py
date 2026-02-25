@@ -13,88 +13,89 @@ def inicio():
 
 <style>
 :root{
---bg:#f2f2f7;
---card:white;
---text:#000;
---input:#f9f9fb;
+    --bg:#f2f2f7;
+    --card:white;
+    --text:#000;
+    --input:#f9f9fb;
 }
 
 body.dark{
---bg:#1c1c1e;
---card:#2c2c2e;
---text:#ffffff;
---input:#3a3a3c;
+    --bg:#1c1c1e;
+    --card:#2c2c2e;
+    --text:#ffffff;
+    --input:#3a3a3c;
 }
 
 body{
-font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-background:var(--bg);
-color:var(--text);
-padding:30px;
-transition:0.3s;
+    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding:30px;
+    transition:0.3s;
 }
 
 /* DARK BUTTON */
 .dark-toggle{
-position:fixed;
-top:20px;
-right:20px;
-padding:8px 14px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:#007aff;
-color:white;
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:8px 14px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#007aff;
+    color:white;
+    font-weight:600;
 }
 
 section{
-background:var(--card);
-padding:25px;
-margin-bottom:30px;
-border-radius:18px;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    background:var(--card);
+    padding:25px;
+    margin-bottom:30px;
+    border-radius:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
 .top-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
-align-items:start;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+    align-items:start;
 }
 
 @media(max-width:900px){
-.top-grid{
-grid-template-columns:1fr;
-}
+    .top-grid{
+        grid-template-columns:1fr;
+    }
 }
 
 h2{ margin-bottom:15px; }
 
 button{
-padding:8px 14px;
-margin:5px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:#e5e5ea;
-transition:0.2s;
+    padding:8px 14px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#e5e5ea;
+    transition:0.2s;
 }
 
 button:hover{ opacity:0.85; }
 
 input,select{
-padding:10px;
-border-radius:10px;
-border:1px solid #d1d1d6;
-background:var(--input);
-color:var(--text);
-font-size:14px;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #d1d1d6;
+    background:var(--input);
+    color:var(--text);
+    font-size:14px;
 }
 
 input:focus,select:focus{
-outline:none;
-border:1px solid #007aff;
-background:white;
+    outline:none;
+    border:1px solid #007aff;
+    background:white;
 }
 
 .success{ background:#34c759!important;color:white; }
@@ -105,20 +106,20 @@ background:white;
 .proxy-yellow{ background:#ffcc00!important; }
 
 .copy-center{
-text-align:center;
-margin-top:30px;
+    text-align:center;
+    margin-top:30px;
 }
 
 .converter{
-display:flex;
-align-items:center;
-gap:10px;
-flex-wrap:wrap;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
 }
 
 .swap{
-font-size:18px;
-cursor:pointer;
+    font-size:18px;
+    cursor:pointer;
 }
 </style>
 </head>
@@ -181,8 +182,6 @@ cursor:pointer;
 </div>
 </div>
 
-<!-- ================= FFI ================= -->
-
 <section>
 <h2>FFI</h2>
 
@@ -214,8 +213,6 @@ cursor:pointer;
 </div>
 </section>
 
-<!-- ================= CUSTOM BUTTONS ================= -->
-
 <section>
 <h2>Custom Buttons</h2>
 
@@ -232,17 +229,26 @@ cursor:pointer;
 
 <script>
 
-/* DARK MODE */
+/* DARK MODE SIMPLE */
+const darkBtn = document.querySelector(".dark-toggle");
+
+function updateDarkButton(){
+    if(document.body.classList.contains("dark")){
+        darkBtn.innerHTML = "🌞 Light";
+    }else{
+        darkBtn.innerHTML = "🌙 Dark";
+    }
+}
+
 function toggleDark(){
-document.body.classList.toggle("dark");
-localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    document.body.classList.toggle("dark");
+    updateDarkButton();
 }
 
-if(localStorage.getItem("darkMode") === "true"){
-document.body.classList.add("dark");
-}
+updateDarkButton();
 
-/* IC */
+/* RESTO DE TU CÓDIGO ORIGINAL */
+
 let icList=[];
 function updateIC(){
 if(icList.length===0){document.getElementById("resultIC").innerText="";return;}
@@ -258,7 +264,6 @@ navigator.clipboard.writeText(document.getElementById("resultIC").innerText)
 .catch(()=>{btn.classList.add("error");setTimeout(()=>btn.classList.remove("error"),800);});
 }
 
-/* Currency */
 const rates={USD:1,MXN:17,CAD:1.35};
 function convert(from){
 let a1=parseFloat(amount1.value)||0;
@@ -281,7 +286,6 @@ convert(1);
 }
 convert(1);
 
-/* Date */
 function calculateDate(){
 let days=parseInt(daysToAdd.value);
 if(isNaN(days)||days<0)return;
@@ -294,7 +298,6 @@ daysToAdd.value=days;
 calculateDate();
 }
 
-/* FFI */
 let selectedProxy="";
 function setProxy(value){
 selectedProxy=value;
@@ -322,13 +325,13 @@ selectedProxy="";
 .forEach(id=>document.getElementById(id).value="");
 }
 
-/* Custom Buttons */
 let customList=[];
 function createCustom(){
 let label=customLabel.value;
 let text=customText.value;
 if(!label||!text)return;
 let btn=document.createElement("button");
+btn.className="custom-btn";
 btn.innerText=label;
 btn.onclick=function(){customList.push(text);navigator.clipboard.writeText(text);};
 customContainer.appendChild(btn);
@@ -345,4 +348,3 @@ customList=[];customContainer.innerHTML="";
 </body>
 </html>
 """
-
