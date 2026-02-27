@@ -90,8 +90,24 @@ button{
 }
 .swap{ font-size:18px; cursor:pointer; }
 .copy-center{ text-align:center; margin-top:30px; }
+
+/////////* AUTO-RESIZE INPUTS */////////
+input,select{
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid #d1d1d6;
+    background:var(--input);
+    color:var(--text);
+    font-size:14px;
+    width:auto;
+    min-width:40px;
+    max-width:100%;
+    box-sizing:border-box;
+
+
 </style>
 </head>
+
 
 <body>
 
@@ -338,6 +354,29 @@ function resetCustom(){
     customList=[];
     customContainer.innerHTML="";
 }
+
+////////////////////////////////////////////////////
+//// AUTO RESIZE INPUTS ZONE
+////////////////////////////////////////////////////
+
+function autoResizeInput(input){
+    input.style.width = "auto";
+    input.style.width = (input.scrollWidth + 5) + "px";
+}
+
+function enableAutoResize(){
+    document.querySelectorAll("input").forEach(input=>{
+        autoResizeInput(input);
+        input.addEventListener("input", function(){
+            autoResizeInput(this);
+        });
+    });
+}
+
+enableAutoResize();
+
+
+
 
 </script>
 </body>
