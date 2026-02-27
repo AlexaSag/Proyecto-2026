@@ -145,17 +145,18 @@ button:active{
 
 /* Auto resize */
 
-input,select{
-    padding:8px 10px;
+input, select{
+    padding:6px 8px;
     border-radius:10px;
     border:1px solid #d1d1d6;
     background:var(--input);
     color:var(--text);
     font-size:14px;
-    width:auto;
-    min-width:40px;
-    max-width:100%;
-    box-sizing:border-box;
+
+    width:1ch;              /* inicia ultra pequeño */
+    min-width:2ch;          /* mínimo real */
+    max-width:300px;        /* evita que se vuelva gigante */
+    box-sizing:content-box; /* importante */
 }
 </style>
 </head>
@@ -447,14 +448,26 @@ function resetCustom(){
 }
 
 function autoResizeInput(input){
-    input.style.width="auto";
-    input.style.width=(input.scrollWidth+5)+"px";
+    const temp = document.createElement("span");
+    temp.style.visibility = "hidden";
+    temp.style.position = "absolute";
+    temp.style.whiteSpace = "pre";
+    temp.style.fontSize = getComputedStyle(input).fontSize;
+    temp.style.fontFamily = getComputedStyle(input).fontFamily;
+
+    temp.innerText = input.value || input.placeholder || "";
+
+    document.body.appendChild(temp);
+
+    input.style.width = (temp.offsetWidth + 15) + "px";
+
+    document.body.removeChild(temp);
 }
 
 function enableAutoResize(){
     document.querySelectorAll("input").forEach(input=>{
         autoResizeInput(input);
-        input.addEventListener("input",function(){
+        input.addEventListener("input", function(){
             autoResizeInput(this);
         });
     });
