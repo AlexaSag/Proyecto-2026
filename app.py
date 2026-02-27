@@ -67,7 +67,7 @@ section{
 }
 
 /* =========================
-   BUTTON MICRO INTERACTIONS
+   GLOBAL BUTTON SYSTEM
 ========================= */
 
 button{
@@ -98,14 +98,13 @@ button:active{
     color:white!important;
 }
 
-.success{ background:#34c759!important;color:white; }
-.error{ background:#ff3b30!important;color:white; }
+/* Proxy colors */
 
 .proxy-green{ background:#34c759!important;color:white; }
 .proxy-red{ background:#ff3b30!important;color:white; }
 .proxy-yellow{ background:#ffcc00!important; }
 
-/* IC ANIMATION */
+/* IC Animation */
 
 .fade-in{
     opacity:1;
@@ -121,7 +120,7 @@ button:active{
     transition:all 0.2s ease;
 }
 
-/* IC GRID */
+/* Layout */
 
 .ic-grid{
     display:grid;
@@ -144,7 +143,7 @@ button:active{
 .swap{ font-size:18px; cursor:pointer; }
 .copy-center{ text-align:center; margin-top:30px; }
 
-/* AUTO-RESIZE INPUTS */
+/* Auto resize */
 
 input,select{
     padding:8px 10px;
@@ -243,8 +242,8 @@ input,select{
 <input type="text" id="outcomeInput" placeholder="Outcome">
 
 <div class="copy-center">
-<button onclick="copyFFI()">Copy FFI</button>
-<button onclick="resetFFI()">Reset</button>
+<button id="copyFFIBtn" onclick="copyFFI()">Copy FFI</button>
+<button id="resetFFIBtn" onclick="resetFFI()">Reset</button>
 </div>
 </section>
 
@@ -255,14 +254,35 @@ input,select{
 <button onclick="createCustom()">Create</button>
 <div id="customContainer"></div>
 <br>
-<button onclick="copyAllCustom()">Copy All</button>
-<button onclick="resetCustom()">Reset</button>
+<button id="copyAllCustomBtn" onclick="copyAllCustom()">Copy All</button>
+<button id="resetCustomBtn" onclick="resetCustom()">Reset</button>
 </section>
 
 <script>
 
 ////////////////////////////////////////////////////
-//// 1️⃣ DARK MODE
+//// GLOBAL BUTTON FEEDBACK
+////////////////////////////////////////////////////
+
+function copyFeedback(button){
+    const original = button.innerText;
+    button.classList.add("copy-success");
+    button.innerText = "✓ Copied";
+    setTimeout(()=>{
+        button.classList.remove("copy-success");
+        button.innerText = original;
+    },3000);
+}
+
+function resetFeedback(button){
+    button.classList.add("reset-flash");
+    setTimeout(()=>{
+        button.classList.remove("reset-flash");
+    },1000);
+}
+
+////////////////////////////////////////////////////
+//// DARK MODE
 ////////////////////////////////////////////////////
 
 const darkBtn=document.querySelector(".dark-toggle");
@@ -279,37 +299,29 @@ function toggleDark(){
 updateDarkButton();
 
 ////////////////////////////////////////////////////
-//// 2️⃣ IC ZONE PREMIUM
+//// IC ZONE
 ////////////////////////////////////////////////////
 
 let icList=[];
 
 function updateIC(){
     const result=document.getElementById("resultIC");
-
     if(icList.length===0){
         result.innerText="";
         return;
     }
-
     result.classList.remove("fade-out");
     result.classList.add("fade-in");
-
     result.innerText="VID: "+icList.map(x=>x+" OK").join(" + ");
 }
 
-function addIC(v){
-    icList.push(v);
-    updateIC();
-}
+function addIC(v){ icList.push(v); updateIC(); }
 
 function eraseIC(){
     if(icList.length===0)return;
-
     const result=document.getElementById("resultIC");
     result.classList.remove("fade-in");
     result.classList.add("fade-out");
-
     setTimeout(()=>{
         icList.pop();
         updateIC();
@@ -318,40 +330,19 @@ function eraseIC(){
 
 function resetIC(){
     icList=[];
-    const result=document.getElementById("resultIC");
-    const btn=document.getElementById("resetICBtn");
-
-    result.classList.remove("fade-in");
-    result.classList.add("fade-out");
-    result.innerText="";
-
-    btn.classList.add("reset-flash");
-
-    setTimeout(()=>{
-        btn.classList.remove("reset-flash");
-    },1000);
+    document.getElementById("resultIC").innerText="";
+    resetFeedback(document.getElementById("resetICBtn"));
 }
 
 function copyIC(){
     if(icList.length===0)return;
-
     const text="VID: "+icList.map(x=>x+" OK").join(" + ");
     navigator.clipboard.writeText(text);
-
-    const btn=document.getElementById("copyICBtn");
-    const original=btn.innerText;
-
-    btn.classList.add("copy-success");
-    btn.innerText="✓ Copied";
-
-    setTimeout(()=>{
-        btn.classList.remove("copy-success");
-        btn.innerText=original;
-    },3000);
+    copyFeedback(document.getElementById("copyICBtn"));
 }
 
 ////////////////////////////////////////////////////
-//// RESTO DEL CÓDIGO (SIN CAMBIOS)
+//// RESTO ORIGINAL (Currency, Date, FFI, Custom)
 ////////////////////////////////////////////////////
 
 const rates={USD:1,MXN:17,CAD:1.35};
@@ -397,11 +388,9 @@ let selectedProxy="";
 
 function setProxy(value){
     selectedProxy=value;
-
     proxyYes.classList.remove("proxy-green");
     proxyNo.classList.remove("proxy-red");
     proxyNA.classList.remove("proxy-yellow");
-
     if(value==="Yes")proxyYes.classList.add("proxy-green");
     if(value==="No")proxyNo.classList.add("proxy-red");
     if(value==="NA")proxyNA.classList.add("proxy-yellow");
@@ -417,12 +406,14 @@ Balance: ${balanceInput.value}
 Outcome: ${outcomeInput.value}
 =======================`;
     navigator.clipboard.writeText(text);
+    copyFeedback(document.getElementById("copyFFIBtn"));
 }
 
 function resetFFI(){
     selectedProxy="";
     ["docInput","docsInput","incomeInput","percentInput","reportInput","showingInput","balanceInput","outcomeInput"]
     .forEach(id=>document.getElementById(id).value="");
+    resetFeedback(document.getElementById("resetFFIBtn"));
 }
 
 let customList=[];
@@ -446,11 +437,13 @@ function createCustom(){
 
 function copyAllCustom(){
     navigator.clipboard.writeText(customList.join(" + "));
+    copyFeedback(document.getElementById("copyAllCustomBtn"));
 }
 
 function resetCustom(){
     customList=[];
     customContainer.innerHTML="";
+    resetFeedback(document.getElementById("resetCustomBtn"));
 }
 
 function autoResizeInput(input){
