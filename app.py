@@ -145,10 +145,9 @@ input,select{
 <button id="copyICBtn" onclick="copyIC()">Copy</button>
 <button onclick="resetIC()">Reset</button>
 </div>
-
 <div id="resultIC"></div>
-
 </section>
+
 <h2>Currency Converter</h2>
 <div class="converter">
 <input type="number" id="amount1" value="1" oninput="convert(1)">
