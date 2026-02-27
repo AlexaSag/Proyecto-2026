@@ -103,7 +103,7 @@ input,select{
     min-width:40px;
     max-width:100%;
     box-sizing:border-box;
-
+}
 
 </style>
 </head>
