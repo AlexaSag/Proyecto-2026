@@ -47,6 +47,50 @@ body{
     font-weight:600;
 }
 
+/* MICRO INTERACTIONS */
+
+button{
+    padding:8px 14px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#e5e5ea;
+    transition:all 0.2s ease;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+button:active{
+    transform:scale(0.96);
+}
+
+.copy-success{
+    background:#34c759!important;
+    color:white!important;
+}
+
+.reset-flash{
+    background:#ff3b30!important;
+    color:white!important;
+}
+
+.fade-in{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.fade-out{
+    opacity:0;
+    transform:translateY(-5px);
+}
+
+.result-animated{
+    transition:all 0.2s ease;
+}
+
 section{
     background:var(--card);
     padding:25px;
@@ -59,42 +103,15 @@ section{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:30px;
-    align-items:start;
 }
 
 @media(max-width:900px){
-    .top-grid{ grid-template-columns:1fr; }
+    .top-grid{grid-template-columns:1fr;}
 }
 
-button{
-    padding:8px 14px;
-    margin:5px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#e5e5ea;
-}
-
-.success{ background:#34c759!important;color:white; }
-.error{ background:#ff3b30!important;color:white; }
-
-.proxy-green{ background:#34c759!important;color:white; }
-.proxy-red{ background:#ff3b30!important;color:white; }
-.proxy-yellow{ background:#ffcc00!important; }
-
-.converter{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-}
-.swap{ font-size:18px; cursor:pointer; }
-.copy-center{ text-align:center; margin-top:30px; }
-
-/* IC GRID */
 .ic-grid{
     display:grid;
-    grid-template-columns:repeat(3, 1fr);
+    grid-template-columns:repeat(3,1fr);
     gap:10px;
     margin-bottom:15px;
 }
@@ -103,7 +120,6 @@ button{
     width:100%;
 }
 
-/* AUTO-RESIZE INPUTS */
 input,select{
     padding:8px 10px;
     border-radius:10px;
@@ -113,13 +129,9 @@ input,select{
     font-size:14px;
     width:auto;
     min-width:40px;
-    max-width:100%;
-    box-sizing:border-box;
 }
-
 </style>
 </head>
-
 
 <body>
 
@@ -128,7 +140,6 @@ input,select{
 
 <div class="top-grid">
 
-
 <section>
 <h2>IC</h2>
 
@@ -136,274 +147,128 @@ input,select{
 <button onclick="addIC('YOB')">YOB</button>
 <button onclick="addIC('@')">@</button>
 <button onclick="addIC('Mobile Phone')">Mobile Phone</button>
-
 <button onclick="addIC('OTP by txt')">OTP by txt</button>
 <button onclick="addIC('OTP by @')">OTP by @</button>
 <button onclick="addIC('UCID')">UCID</button>
-
 <button onclick="eraseIC()">←</button>
 <button id="copyICBtn" onclick="copyIC()">Copy</button>
-<button onclick="resetIC()">Reset</button>
+<button id="resetICBtn" onclick="resetIC()">Reset</button>
 </div>
-<div id="resultIC"></div>
-</section>
 
-<section>
-<h2>Currency Converter</h2>
-<div class="converter">
-<input type="number" id="amount1" value="1" oninput="convert(1)">
-<select id="currency1" onchange="convert(1)">
-<option value="USD">USD</option>
-<option value="MXN">MXN</option>
-<option value="CAD">CAD</option>
-</select>
-
-<span class="swap" onclick="swapCurrencies()">⇄</span>
-
-<input type="number" id="amount2" oninput="convert(2)">
-<select id="currency2" onchange="convert(1)">
-<option value="MXN">MXN</option>
-<option value="USD">USD</option>
-<option value="CAD">CAD</option>
-</select>
-</div>
-</section>
-
-<section>
-<h2>Date Calculator</h2>
-<input type="number" id="daysToAdd" min="0" placeholder="Days from today">
-<button onclick="calculateDate()">Calculate</button>
-<button onclick="quickAdd(18)">+18</button>
-<button onclick="quickAdd(30)">+30</button>
-<div id="resultDate"></div>
+<div id="resultIC" class="result-animated fade-in"></div>
 </section>
 
 </div>
-</div>
-
-<section>
-<h2>FFI</h2>
-<input type="text" id="docInput" placeholder="Doc">
-
-<div>
-<strong>60% Proxy</strong><br>
-<button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
-<button id="proxyNo" onclick="setProxy('No')">No</button>
-<button id="proxyNA" onclick="setProxy('NA')">NA</button>
-</div>
-
-<br>
-
-<input type="text" id="docsInput" placeholder="Docs">
-<input type="number" id="incomeInput" placeholder="$">
-<input type="number" id="percentInput" placeholder="%">
-
-<br><br>
-
-<input type="text" id="reportInput" placeholder="Report"><br><br>
-<input type="text" id="showingInput" placeholder="Showing"><br><br>
-<input type="text" id="balanceInput" placeholder="Balance"><br><br>
-<input type="text" id="outcomeInput" placeholder="Outcome">
-
-<div class="copy-center">
-<button onclick="copyFFI()">Copy FFI</button>
-<button onclick="resetFFI()">Reset</button>
-</div>
-</section>
-
-<section>
-<h2>Custom Buttons</h2>
-<input type="text" id="customLabel" placeholder="Button Name">
-<input type="text" id="customText" placeholder="Text to Copy">
-<button onclick="createCustom()">Create</button>
-<div id="customContainer"></div>
-<br>
-<button onclick="copyAllCustom()">Copy All</button>
-<button onclick="resetCustom()">Reset</button>
-</section>
 
 <script>
 
 ////////////////////////////////////////////////////
-//// 1️⃣ DARK MODE ZONE
+//// DARK MODE
 ////////////////////////////////////////////////////
 
-const darkBtn = document.querySelector(".dark-toggle");
+const darkBtn=document.querySelector(".dark-toggle");
 
 function updateDarkButton(){
-    darkBtn.innerHTML = document.body.classList.contains("dark")
-        ? "🌞 Light"
-        : "🌙 Dark";
+    darkBtn.innerHTML=document.body.classList.contains("dark")
+    ?"🌞 Light":"🌙 Dark";
 }
 
 function toggleDark(){
     document.body.classList.toggle("dark");
     updateDarkButton();
 }
-
 updateDarkButton();
 
 ////////////////////////////////////////////////////
-//// 2️⃣ IC ZONE
+//// IC ZONE PREMIUM UX
 ////////////////////////////////////////////////////
 
 let icList=[];
 
 function updateIC(){
     const result=document.getElementById("resultIC");
-    if(icList.length===0){ result.innerText=""; return; }
+
+    if(icList.length===0){
+        result.innerText="";
+        return;
+    }
+
+    result.classList.remove("fade-out");
+    result.classList.add("fade-in");
+
     result.innerText="VID: "+icList.map(x=>x+" OK").join(" + ");
 }
 
-function addIC(v){ icList.push(v); updateIC(); }
-function eraseIC(){ icList.pop(); updateIC(); }
-function resetIC(){ icList=[]; updateIC(); }
+function addIC(v){
+    icList.push(v);
+    updateIC();
+}
+
+function eraseIC(){
+    if(icList.length===0)return;
+
+    const result=document.getElementById("resultIC");
+    result.classList.remove("fade-in");
+    result.classList.add("fade-out");
+
+    setTimeout(()=>{
+        icList.pop();
+        updateIC();
+    },150);
+}
+
+function resetIC(){
+    icList=[];
+    const result=document.getElementById("resultIC");
+    const btn=document.getElementById("resetICBtn");
+
+    result.classList.remove("fade-in");
+    result.classList.add("fade-out");
+    result.innerText="";
+
+    btn.classList.add("reset-flash");
+
+    setTimeout(()=>{
+        btn.classList.remove("reset-flash");
+    },1000);
+}
 
 function copyIC(){
-    navigator.clipboard.writeText(resultIC.innerText);
-}
+    if(icList.length===0)return;
 
-////////////////////////////////////////////////////
-//// 3️⃣ CURRENCY ZONE
-////////////////////////////////////////////////////
-
-const rates={USD:1,MXN:17,CAD:1.35};
-
-function convert(from){
-    let a1=parseFloat(amount1.value)||0;
-    let a2=parseFloat(amount2.value)||0;
-    let c1=currency1.value;
-    let c2=currency2.value;
-
-    if(from===1){
-        let usd=a1/rates[c1];
-        amount2.value=(usd*rates[c2]).toFixed(2);
-    }else{
-        let usd=a2/rates[c2];
-        amount1.value=(usd*rates[c1]).toFixed(2);
-    }
-}
-
-function swapCurrencies(){
-    let temp=currency1.value;
-    currency1.value=currency2.value;
-    currency2.value=temp;
-    convert(1);
-}
-
-convert(1);
-
-////////////////////////////////////////////////////
-//// 4️⃣ DATE ZONE
-////////////////////////////////////////////////////
-
-function calculateDate(){
-    let days=parseInt(daysToAdd.value);
-    if(isNaN(days)||days<0)return;
-    let today=new Date();
-    today.setDate(today.getDate()+days);
-    resultDate.innerText=(today.getMonth()+1)+"/"+today.getDate();
-}
-
-function quickAdd(days){
-    daysToAdd.value=days;
-    calculateDate();
-}
-
-////////////////////////////////////////////////////
-//// 5️⃣ FFI ZONE
-////////////////////////////////////////////////////
-
-let selectedProxy="";
-
-function setProxy(value){
-    selectedProxy = value;
-
-    const yes = document.getElementById("proxyYes");
-    const no = document.getElementById("proxyNo");
-    const na = document.getElementById("proxyNA");
-
-    yes.classList.remove("proxy-green");
-    no.classList.remove("proxy-red");
-    na.classList.remove("proxy-yellow");
-
-    if(value === "Yes") yes.classList.add("proxy-green");
-    if(value === "No") no.classList.add("proxy-red");
-    if(value === "NA") na.classList.add("proxy-yellow");
-}
-
-function copyFFI(){
-    let text=`===========FFI===========
-Doc: ${docInput.value}
-60% Proxy: ${selectedProxy} ; ${docsInput.value} + $${incomeInput.value} + ${percentInput.value}%
-Report: ${reportInput.value}
-Showing: ${showingInput.value}
-Balance: ${balanceInput.value}
-Outcome: ${outcomeInput.value}
-=======================`;
+    const text="VID: "+icList.map(x=>x+" OK").join(" + ");
     navigator.clipboard.writeText(text);
-}
 
-function resetFFI(){
-    selectedProxy="";
-    ["docInput","docsInput","incomeInput","percentInput","reportInput","showingInput","balanceInput","outcomeInput"]
-    .forEach(id=>document.getElementById(id).value="");
-}
+    const btn=document.getElementById("copyICBtn");
+    const original=btn.innerText;
 
-////////////////////////////////////////////////////
-//// 6️⃣ CUSTOM BUTTONS ZONE
-////////////////////////////////////////////////////
+    btn.classList.add("copy-success");
+    btn.innerText="✓ Copied";
 
-let customList=[];
-
-function createCustom(){
-    let label=customLabel.value;
-    let text=customText.value;
-    if(!label||!text)return;
-
-    let btn=document.createElement("button");
-    btn.innerText=label;
-    btn.onclick=function(){
-        customList.push(text);
-        navigator.clipboard.writeText(text);
-    };
-
-    customContainer.appendChild(btn);
-    customLabel.value="";
-    customText.value="";
-}
-
-function copyAllCustom(){
-    navigator.clipboard.writeText(customList.join(" + "));
-}
-
-function resetCustom(){
-    customList=[];
-    customContainer.innerHTML="";
+    setTimeout(()=>{
+        btn.classList.remove("copy-success");
+        btn.innerText=original;
+    },3000);
 }
 
 ////////////////////////////////////////////////////
-//// AUTO RESIZE INPUTS ZONE
+//// AUTO RESIZE
 ////////////////////////////////////////////////////
 
 function autoResizeInput(input){
-    input.style.width = "auto";
-    input.style.width = (input.scrollWidth + 5) + "px";
+    input.style.width="auto";
+    input.style.width=(input.scrollWidth+5)+"px";
 }
 
 function enableAutoResize(){
     document.querySelectorAll("input").forEach(input=>{
         autoResizeInput(input);
-        input.addEventListener("input", function(){
+        input.addEventListener("input",function(){
             autoResizeInput(this);
         });
     });
 }
-
 enableAutoResize();
-
-
-
 
 </script>
 </body>
