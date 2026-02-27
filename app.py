@@ -91,7 +91,19 @@ button{
 .swap{ font-size:18px; cursor:pointer; }
 .copy-center{ text-align:center; margin-top:30px; }
 
-/////////* AUTO-RESIZE INPUTS */////////
+/* IC GRID */
+.ic-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.ic-grid button{
+    width:100%;
+}
+
+/* AUTO-RESIZE INPUTS */
 input,select{
     padding:8px 10px;
     border-radius:10px;
@@ -116,24 +128,29 @@ input,select{
 
 <div class="top-grid">
 
+
 <section>
 <h2>IC</h2>
+
+<div class="ic-grid">
 <button onclick="addIC('YOB')">YOB</button>
 <button onclick="addIC('@')">@</button>
 <button onclick="addIC('Mobile Phone')">Mobile Phone</button>
+
 <button onclick="addIC('OTP by txt')">OTP by txt</button>
 <button onclick="addIC('OTP by @')">OTP by @</button>
 <button onclick="addIC('UCID')">UCID</button>
-<div id="resultIC"></div>
-<br>
+
 <button onclick="eraseIC()">←</button>
 <button id="copyICBtn" onclick="copyIC()">Copy</button>
 <button onclick="resetIC()">Reset</button>
+</div>
+
+<div id="resultIC"></div>
+
 </section>
 
-<div>
 
-<section>
 <h2>Currency Converter</h2>
 <div class="converter">
 <input type="number" id="amount1" value="1" oninput="convert(1)">
@@ -302,7 +319,19 @@ function quickAdd(days){
 let selectedProxy="";
 
 function setProxy(value){
-    selectedProxy=value;
+    selectedProxy = value;
+
+    const yes = document.getElementById("proxyYes");
+    const no = document.getElementById("proxyNo");
+    const na = document.getElementById("proxyNA");
+
+    yes.classList.remove("proxy-green");
+    no.classList.remove("proxy-red");
+    na.classList.remove("proxy-yellow");
+
+    if(value === "Yes") yes.classList.add("proxy-green");
+    if(value === "No") no.classList.add("proxy-red");
+    if(value === "NA") na.classList.add("proxy-yellow");
 }
 
 function copyFFI(){
@@ -382,6 +411,3 @@ enableAutoResize();
 </body>
 </html>
 """
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
