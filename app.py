@@ -66,10 +66,6 @@ section{
     .top-grid{ grid-template-columns:1fr; }
 }
 
-/* =========================
-   GLOBAL BUTTON SYSTEM
-========================= */
-
 button{
     padding:8px 14px;
     margin:5px;
@@ -80,57 +76,27 @@ button{
     transition:all 0.2s ease;
 }
 
-button:hover{
-    transform:translateY(-2px);
-}
+button:hover{ transform:translateY(-2px); }
+button:active{ transform:scale(0.96); }
 
-button:active{
-    transform:scale(0.96);
-}
-
-.copy-success{
-    background:#34c759!important;
-    color:white!important;
-}
-
-.reset-flash{
-    background:#ff3b30!important;
-    color:white!important;
-}
-
-/* Proxy colors */
+.copy-success{ background:#34c759!important;color:white!important; }
+.reset-flash{ background:#ff3b30!important;color:white!important; }
 
 .proxy-green{ background:#34c759!important;color:white; }
 .proxy-red{ background:#ff3b30!important;color:white; }
 .proxy-yellow{ background:#ffcc00!important; }
 
-/* IC Animation */
-
-.fade-in{
-    opacity:1;
-    transform:translateY(0);
-}
-
-.fade-out{
-    opacity:0;
-    transform:translateY(-5px);
-}
-
-.result-animated{
-    transition:all 0.2s ease;
-}
-
-/* Layout */
-
 .ic-grid{
     display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:10px;
-    margin-bottom:15px;
+    grid-template-columns:repeat(3, auto);
+    justify-content:center;
+    gap:8px;
 }
 
 .ic-grid button{
-    width:100%;
+    padding:5px 9px;
+    font-size:12px;
+    border-radius:20px;
 }
 
 .converter{
@@ -143,8 +109,6 @@ button:active{
 .swap{ font-size:18px; cursor:pointer; }
 .copy-center{ text-align:center; margin-top:30px; }
 
-/* Auto resize */
-
 input, select{
     padding:6px 8px;
     border-radius:10px;
@@ -152,11 +116,47 @@ input, select{
     background:var(--input);
     color:var(--text);
     font-size:14px;
+    width:2ch;
+    min-width:3ch;
+    max-width:300px;
+    box-sizing:content-box;
+}
 
-    width:1ch;              /* inicia ultra pequeño */
-    min-width:2ch;          /* mínimo real */
-    max-width:300px;        /* evita que se vuelva gigante */
-    box-sizing:content-box; /* importante */
+/* ================= MODAL ================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    z-index:1000;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.4);
+    backdrop-filter:blur(4px);
+}
+
+.modal-content{
+    background:var(--card);
+    margin:5% auto;
+    padding:30px;
+    width:90%;
+    max-width:500px;
+    border-radius:20px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.2);
+    animation:fadeModal 0.2s ease;
+}
+
+.close{
+    float:right;
+    font-size:22px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+@keyframes fadeModal{
+    from{opacity:0; transform:translateY(-10px);}
+    to{opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
@@ -170,7 +170,6 @@ input, select{
 
 <section>
 <h2>IC</h2>
-
 <div class="ic-grid">
 <button onclick="addIC('YOB')">YOB</button>
 <button onclick="addIC('@')">@</button>
@@ -182,8 +181,7 @@ input, select{
 <button id="copyICBtn" onclick="copyIC()">Copy</button>
 <button id="resetICBtn" onclick="resetIC()">Reset</button>
 </div>
-
-<div id="resultIC" class="result-animated fade-in"></div>
+<div id="resultIC"></div>
 </section>
 
 <section>
@@ -216,20 +214,27 @@ input, select{
 <div id="resultDate"></div>
 </section>
 
-</div>
-
 <section>
 <h2>FFI</h2>
-<input type="text" id="docInput" placeholder="Doc">
+<button onclick="openFFI()">Open FFI Form</button>
+</section>
 
-<div>
+</div>
+
+<!-- MODAL FFI -->
+<div id="ffiModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeFFI()">×</span>
+<h2>FFI Form</h2>
+
+<input type="text" id="docInput" placeholder="Doc"><br><br>
+
 <strong>60% Proxy</strong><br>
 <button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
 <button id="proxyNo" onclick="setProxy('No')">No</button>
 <button id="proxyNA" onclick="setProxy('NA')">NA</button>
-</div>
 
-<br>
+<br><br>
 
 <input type="text" id="docsInput" placeholder="Docs">
 <input type="number" id="incomeInput" placeholder="$">
@@ -246,24 +251,15 @@ input, select{
 <button id="copyFFIBtn" onclick="copyFFI()">Copy FFI</button>
 <button id="resetFFIBtn" onclick="resetFFI()">Reset</button>
 </div>
-</section>
 
-<section>
-<h2>Custom Buttons</h2>
-<input type="text" id="customLabel" placeholder="Button Name">
-<input type="text" id="customText" placeholder="Text to Copy">
-<button onclick="createCustom()">Create</button>
-<div id="customContainer"></div>
-<br>
-<button id="copyAllCustomBtn" onclick="copyAllCustom()">Copy All</button>
-<button id="resetCustomBtn" onclick="resetCustom()">Reset</button>
-</section>
+</div>
+</div>
 
 <script>
 
-////////////////////////////////////////////////////
-//// GLOBAL BUTTON FEEDBACK
-////////////////////////////////////////////////////
+function toggleDark(){
+    document.body.classList.toggle("dark");
+}
 
 function copyFeedback(button){
     const original = button.innerText;
@@ -272,7 +268,7 @@ function copyFeedback(button){
     setTimeout(()=>{
         button.classList.remove("copy-success");
         button.innerText = original;
-    },3000);
+    },2000);
 }
 
 function resetFeedback(button){
@@ -282,116 +278,29 @@ function resetFeedback(button){
     },1000);
 }
 
-////////////////////////////////////////////////////
-//// DARK MODE
-////////////////////////////////////////////////////
-
-const darkBtn=document.querySelector(".dark-toggle");
-
-function updateDarkButton(){
-    darkBtn.innerHTML=document.body.classList.contains("dark")
-        ?"🌞 Light":"🌙 Dark";
+function openFFI(){
+    document.getElementById("ffiModal").style.display="block";
 }
 
-function toggleDark(){
-    document.body.classList.toggle("dark");
-    updateDarkButton();
+function closeFFI(){
+    document.getElementById("ffiModal").style.display="none";
 }
-updateDarkButton();
 
-////////////////////////////////////////////////////
-//// IC ZONE
-////////////////////////////////////////////////////
-
-let icList=[];
-
-function updateIC(){
-    const result=document.getElementById("resultIC");
-    if(icList.length===0){
-        result.innerText="";
-        return;
+window.onclick=function(event){
+    let modal=document.getElementById("ffiModal");
+    if(event.target===modal){
+        modal.style.display="none";
     }
-    result.classList.remove("fade-out");
-    result.classList.add("fade-in");
-    result.innerText="VID: "+icList.map(x=>x+" OK").join(" + ");
-}
-
-function addIC(v){ icList.push(v); updateIC(); }
-
-function eraseIC(){
-    if(icList.length===0)return;
-    const result=document.getElementById("resultIC");
-    result.classList.remove("fade-in");
-    result.classList.add("fade-out");
-    setTimeout(()=>{
-        icList.pop();
-        updateIC();
-    },150);
-}
-
-function resetIC(){
-    icList=[];
-    document.getElementById("resultIC").innerText="";
-    resetFeedback(document.getElementById("resetICBtn"));
-}
-
-function copyIC(){
-    if(icList.length===0)return;
-    const text="VID: "+icList.map(x=>x+" OK").join(" + ");
-    navigator.clipboard.writeText(text);
-    copyFeedback(document.getElementById("copyICBtn"));
-}
-
-////////////////////////////////////////////////////
-//// RESTO ORIGINAL (Currency, Date, FFI, Custom)
-////////////////////////////////////////////////////
-
-const rates={USD:1,MXN:17,CAD:1.35};
-
-function convert(from){
-    let a1=parseFloat(amount1.value)||0;
-    let a2=parseFloat(amount2.value)||0;
-    let c1=currency1.value;
-    let c2=currency2.value;
-
-    if(from===1){
-        let usd=a1/rates[c1];
-        amount2.value=(usd*rates[c2]).toFixed(2);
-    }else{
-        let usd=a2/rates[c2];
-        amount1.value=(usd*rates[c1]).toFixed(2);
-    }
-}
-
-function swapCurrencies(){
-    let temp=currency1.value;
-    currency1.value=currency2.value;
-    currency2.value=temp;
-    convert(1);
-}
-
-convert(1);
-
-function calculateDate(){
-    let days=parseInt(daysToAdd.value);
-    if(isNaN(days)||days<0)return;
-    let today=new Date();
-    today.setDate(today.getDate()+days);
-    resultDate.innerText=(today.getMonth()+1)+"/"+today.getDate();
-}
-
-function quickAdd(days){
-    daysToAdd.value=days;
-    calculateDate();
 }
 
 let selectedProxy="";
 
 function setProxy(value){
     selectedProxy=value;
-    proxyYes.classList.remove("proxy-green");
-    proxyNo.classList.remove("proxy-red");
-    proxyNA.classList.remove("proxy-yellow");
+    proxyYes.classList.remove("proxy-green","proxy-red","proxy-yellow");
+    proxyNo.classList.remove("proxy-green","proxy-red","proxy-yellow");
+    proxyNA.classList.remove("proxy-green","proxy-red","proxy-yellow");
+
     if(value==="Yes")proxyYes.classList.add("proxy-green");
     if(value==="No")proxyNo.classList.add("proxy-red");
     if(value==="NA")proxyNA.classList.add("proxy-yellow");
@@ -414,68 +323,16 @@ function resetFFI(){
     selectedProxy="";
     ["docInput","docsInput","incomeInput","percentInput","reportInput","showingInput","balanceInput","outcomeInput"]
     .forEach(id=>document.getElementById(id).value="");
+
+    proxyYes.classList.remove("proxy-green");
+    proxyNo.classList.remove("proxy-red");
+    proxyNA.classList.remove("proxy-yellow");
+
     resetFeedback(document.getElementById("resetFFIBtn"));
 }
-
-let customList=[];
-
-function createCustom(){
-    let label=customLabel.value;
-    let text=customText.value;
-    if(!label||!text)return;
-
-    let btn=document.createElement("button");
-    btn.innerText=label;
-    btn.onclick=function(){
-        customList.push(text);
-        navigator.clipboard.writeText(text);
-    };
-
-    customContainer.appendChild(btn);
-    customLabel.value="";
-    customText.value="";
-}
-
-function copyAllCustom(){
-    navigator.clipboard.writeText(customList.join(" + "));
-    copyFeedback(document.getElementById("copyAllCustomBtn"));
-}
-
-function resetCustom(){
-    customList=[];
-    customContainer.innerHTML="";
-    resetFeedback(document.getElementById("resetCustomBtn"));
-}
-
-function autoResizeInput(input){
-    const temp = document.createElement("span");
-    temp.style.visibility = "hidden";
-    temp.style.position = "absolute";
-    temp.style.whiteSpace = "pre";
-    temp.style.fontSize = getComputedStyle(input).fontSize;
-    temp.style.fontFamily = getComputedStyle(input).fontFamily;
-
-    temp.innerText = input.value || input.placeholder || "";
-
-    document.body.appendChild(temp);
-
-    input.style.width = (temp.offsetWidth + 15) + "px";
-
-    document.body.removeChild(temp);
-}
-
-function enableAutoResize(){
-    document.querySelectorAll("input").forEach(input=>{
-        autoResizeInput(input);
-        input.addEventListener("input", function(){
-            autoResizeInput(this);
-        });
-    });
-}
-
-enableAutoResize();
 
 </script>
 </body>
 </html>
 """
+
