@@ -66,6 +66,41 @@ section{
     .top-grid{ grid-template-columns:1fr; }
 }
 
+/* FFI MODAL */
+
+.ffi-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+    backdrop-filter:blur(6px);
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.ffi-content{
+    background:var(--card);
+    padding:30px;
+    border-radius:20px;
+    width:90%;
+    max-width:500px;
+    max-height:90vh;
+    overflow:auto;
+    position:relative;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.close-btn{
+    position:absolute;
+    top:15px;
+    right:20px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+
+
 /* =========================
    GLOBAL BUTTON SYSTEM
 ========================= */
@@ -156,7 +191,7 @@ input, select{
     font-size:14px;
 
     width:2ch;              /* inicia ultra pequeño */
-    min-width:3ch;          /* mínimo real */
+    min-width:auto;          /* mínimo real */
     max-width:300px;        /* evita que se vuelva gigante */
     box-sizing:content-box; /* importante */
 }
@@ -221,34 +256,47 @@ input, select{
 </div>
 
 <section>
-<h2>FFI</h2>
-<input type="text" id="docInput" placeholder="Doc">
-
-<div>
-<strong>60% Proxy</strong><br>
-<button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
-<button id="proxyNo" onclick="setProxy('No')">No</button>
-<button id="proxyNA" onclick="setProxy('NA')">NA</button>
-</div>
-
-<br>
-
-<input type="text" id="docsInput" placeholder="Docs">
-<input type="number" id="incomeInput" placeholder="$">
-<input type="number" id="percentInput" placeholder="%">
-
-<br><br>
-
-<input type="text" id="reportInput" placeholder="Report"><br><br>
-<input type="text" id="showingInput" placeholder="Showing"><br><br>
-<input type="text" id="balanceInput" placeholder="Balance"><br><br>
-<input type="text" id="outcomeInput" placeholder="Outcome">
-
-<div class="copy-center">
-<button id="copyFFIBtn" onclick="copyFFI()">Copy FFI</button>
-<button id="resetFFIBtn" onclick="resetFFI()">Reset</button>
-</div>
+<h2>Templates</h2>
+<button onclick="openFFI()">Open FFI</button>
 </section>
+
+<!-- FFI MODAL -->
+<div id="ffiModal" class="ffi-modal">
+  <div class="ffi-content">
+
+    <span class="close-btn" onclick="closeFFI()">✖</span>
+
+    <h2>FFI</h2>
+
+    <input type="text" id="docInput" placeholder="Doc">
+
+    <div>
+      <strong>60% Proxy</strong><br>
+      <button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
+      <button id="proxyNo" onclick="setProxy('No')">No</button>
+      <button id="proxyNA" onclick="setProxy('NA')">NA</button>
+    </div>
+
+    <br>
+
+    <input type="text" id="docsInput" placeholder="Docs">
+    <input type="number" id="incomeInput" placeholder="$">
+    <input type="number" id="percentInput" placeholder="%">
+
+    <br><br>
+
+    <input type="text" id="reportInput" placeholder="Report"><br><br>
+    <input type="text" id="showingInput" placeholder="Showing"><br><br>
+    <input type="text" id="balanceInput" placeholder="Balance"><br><br>
+    <input type="text" id="outcomeInput" placeholder="Outcome">
+
+    <div class="copy-center">
+      <button id="copyFFIBtn" onclick="copyFFI()">Copy FFI</button>
+      <button id="resetFFIBtn" onclick="resetFFI()">Reset</button>
+    </div>
+
+  </div>
+</div>
 
 <section>
 <h2>Custom Buttons</h2>
@@ -345,7 +393,7 @@ function copyIC(){
 }
 
 ////////////////////////////////////////////////////
-//// RESTO ORIGINAL (Currency, Date, FFI, Custom)
+//// RESTO ORIGINAL (Currency, Date, Custom)
 ////////////////////////////////////////////////////
 
 const rates={USD:1,MXN:17,CAD:1.35};
@@ -473,6 +521,18 @@ function enableAutoResize(){
             autoResizeInput(this);
         });
     });
+}
+
+////////////////////////////////////////////////////
+//// FFI MODAL CONTROL
+////////////////////////////////////////////////////
+
+function openFFI(){
+    document.getElementById("ffiModal").style.display="flex";
+}
+
+function closeFFI(){
+    document.getElementById("ffiModal").style.display="none";
 }
 
 enableAutoResize();
