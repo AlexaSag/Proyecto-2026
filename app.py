@@ -295,7 +295,11 @@ input, select{
 
 <section>
 <h2>Templates</h2>
+
 <button onclick="openFFI()">Open FFI</button>
+
+<button id="firstBtn" onclick="proximamente()">FIRST</button>
+
 </section>
 
 <!-- FFI MODAL -->
@@ -333,6 +337,7 @@ input, select{
       <button id="resetFFIBtn" onclick="resetFFI()">Reset</button>
     </div>
 
+
   </div>
 </div>
 
@@ -346,6 +351,9 @@ input, select{
 <button id="copyAllCustomBtn" onclick="copyAllCustom()">Copy All</button>
 <button id="resetCustomBtn" onclick="resetCustom()">Reset</button>
 </section>
+
+
+
 
 <script>
 
@@ -499,9 +507,19 @@ Outcome: ${outcomeInput.value}
 }
 
 function resetFFI(){
+
     selectedProxy="";
-    ["docInput","docsInput","incomeInput","percentInput","reportInput","showingInput","balanceInput","outcomeInput"]
+
+    // Limpiar inputs
+    ["docInput","docsInput","incomeInput","percentInput",
+     "reportInput","showingInput","balanceInput","outcomeInput"]
     .forEach(id=>document.getElementById(id).value="");
+
+    // 🔴 QUITAR selección visual de Proxy
+    proxyYes.classList.remove("proxy-green");
+    proxyNo.classList.remove("proxy-red");
+    proxyNA.classList.remove("proxy-yellow");
+
     resetFeedback(document.getElementById("resetFFIBtn"));
 }
 
@@ -572,7 +590,11 @@ function openFFI(){
 function closeFFI(){
     document.getElementById("ffiModal").style.display="none";
 }
-
+function proximamente(){
+    const btn = document.getElementById("firstBtn");
+    btn.innerText = "Próximamente";
+    btn.disabled = true; // opcional: lo desactiva
+}
 enableAutoResize();
 
 </script>
