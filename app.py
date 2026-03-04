@@ -170,17 +170,26 @@ button:active{
     border-radius:20px;
 }
 
-/* ===== FIX SOLO CURRENCY CONVERTER ===== */
+/* ===== CURRENCY CLEAN LAYOUT ===== */
 
-.converter input{
-    width:120px !important;
-    min-width:120px !important;
+.converter{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:nowrap;
 }
 
-.converter select{
-    width:95px;
-    min-width:95px;
-    padding:6px 10px;
+.currency-input{
+    width:70px !important;
+    min-width:70px !important;
+    text-align:center;
+}
+
+.currency-select{
+    width:85px;
+    min-width:85px;
+    padding:6px 8px;
     border-radius:10px;
     border:1px solid #d1d1d6;
     background:var(--input);
@@ -188,18 +197,10 @@ button:active{
     font-size:14px;
 }
 
-.converter{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
 .swap{
-    font-size:20px;
-    padding:6px 10px;
-    background:#e5e5ea;
+    font-size:18px;
+    cursor:pointer;
+    padding:4px 8px;
     border-radius:50%;
     transition:0.2s;
 }
@@ -207,6 +208,7 @@ button:active{
 .swap:hover{
     transform:rotate(180deg);
 }
+/* ===== CURRENCY end ===== */
 
 .swap{ font-size:18px; cursor:pointer; }
 .copy-center{ text-align:center; margin-top:30px; }
@@ -256,22 +258,27 @@ input, select{
 
 <section>
 <h2>Currency Converter</h2>
+
 <div class="converter">
-<input type="number" id="amount1" value="1" oninput="convert(1)">
-<select id="currency1" onchange="convert(1)">
-<option value="USD">USD</option>
-<option value="MXN">MXN</option>
-<option value="CAD">CAD</option>
-</select>
 
-<span class="swap" onclick="swapCurrencies()">⇄</span>
+  <input type="number" id="amount1" value="1" oninput="convert(1)" class="currency-input">
 
-<input type="number" id="amount2" oninput="convert(2)">
-<select id="currency2" onchange="convert(1)">
-<option value="MXN">MXN</option>
-<option value="USD">USD</option>
-<option value="CAD">CAD</option>
-</select>
+  <select id="currency1" onchange="convert(1)" class="currency-select">
+    <option value="USD">USD $</option>
+    <option value="MXN">MXN $</option>
+    <option value="CAD">CAD $</option>
+  </select>
+
+  <span class="swap" onclick="swapCurrencies()">⇄</span>
+
+  <input type="number" id="amount2" oninput="convert(2)" class="currency-input">
+
+  <select id="currency2" onchange="convert(1)" class="currency-select">
+    <option value="MXN">MXN $</option>
+    <option value="USD">USD $</option>
+    <option value="CAD">CAD $</option>
+  </select>
+
 </div>
 </section>
 
