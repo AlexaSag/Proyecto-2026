@@ -316,6 +316,20 @@ input, select{
 
 
 
+<section>
+<h2>Custom Buttons</h2>
+<input type="text" id="customLabel" placeholder="Button Name">
+<input type="text" id="customText" placeholder="Text to Copy">
+<button onclick="createCustom()">Create</button>
+<div id="customContainer"></div>
+<br>
+<button id="copyAllCustomBtn" onclick="copyAllCustom()">Copy All</button>
+<button id="resetCustomBtn" onclick="resetCustom()">Reset</button>
+</section>
+
+
+
+
 </div>
 
 <section>
@@ -366,16 +380,6 @@ input, select{
   </div>
 </div>
 
-<section>
-<h2>Custom Buttons</h2>
-<input type="text" id="customLabel" placeholder="Button Name">
-<input type="text" id="customText" placeholder="Text to Copy">
-<button onclick="createCustom()">Create</button>
-<div id="customContainer"></div>
-<br>
-<button id="copyAllCustomBtn" onclick="copyAllCustom()">Copy All</button>
-<button id="resetCustomBtn" onclick="resetCustom()">Reset</button>
-</section>
 
 
 
