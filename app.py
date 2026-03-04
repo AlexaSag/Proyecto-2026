@@ -170,11 +170,42 @@ button:active{
     border-radius:20px;
 }
 
+/* ===== FIX SOLO CURRENCY CONVERTER ===== */
+
+.converter input{
+    width:120px !important;
+    min-width:120px !important;
+}
+
+.converter select{
+    width:95px;
+    min-width:95px;
+    padding:6px 10px;
+    border-radius:10px;
+    border:1px solid #d1d1d6;
+    background:var(--input);
+    color:var(--text);
+    font-size:14px;
+}
+
 .converter{
     display:flex;
     align-items:center;
-    gap:10px;
+    justify-content:center;
+    gap:15px;
     flex-wrap:wrap;
+}
+
+.swap{
+    font-size:20px;
+    padding:6px 10px;
+    background:#e5e5ea;
+    border-radius:50%;
+    transition:0.2s;
+}
+
+.swap:hover{
+    transform:rotate(180deg);
 }
 
 .swap{ font-size:18px; cursor:pointer; }
