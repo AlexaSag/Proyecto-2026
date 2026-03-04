@@ -282,14 +282,29 @@ input, select{
 </div>
 </section>
 
+
+
 <section>
 <h2>Date Calculator</h2>
-<input type="number" id="daysToAdd" min="0" placeholder="Days from today">
+
+<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+
+<button onclick="setToday()">Today</button>
+
+<input type="date" id="baseDate">
+
+<input type="number" id="daysToAdd" min="0" placeholder="Days">
+
 <button onclick="calculateDate()">Calculate</button>
 <button onclick="quickAdd(18)">+18</button>
 <button onclick="quickAdd(30)">+30</button>
+
+</div>
+
 <div id="resultDate"></div>
 </section>
+
+
 
 </div>
 
@@ -469,11 +484,19 @@ function swapCurrencies(){
 convert(1);
 
 function calculateDate(){
-    let days=parseInt(daysToAdd.value);
-    if(isNaN(days)||days<0)return;
-    let today=new Date();
-    today.setDate(today.getDate()+days);
-    resultDate.innerText=(today.getMonth()+1)+"/"+today.getDate();
+    let base = document.getElementById("baseDate").value;
+    let baseDate = base ? new Date(base) : new Date();
+    let days = parseInt(daysToAdd.value);
+    if(isNaN(days) || days < 0) return;
+    baseDate.setDate(baseDate.getDate() + days);
+    resultDate.innerText = 
+        (baseDate.getMonth()+1) + "/" + baseDate.getDate();
+}
+
+function setToday(){
+    let today = new Date();
+    let formatted = today.toISOString().split("T")[0];
+    document.getElementById("baseDate").value = formatted;
 }
 
 function quickAdd(days){
