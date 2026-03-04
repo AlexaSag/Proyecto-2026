@@ -228,6 +228,15 @@ input, select{
     max-width:300px;        /* evita que se vuelva gigante */
     box-sizing:content-box; /* importante */
 }
+
+/* DATE FIX DEFINITIVO */
+#baseDate{
+    width: 180px !important;
+    min-width: 180px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0;
+}
+
 </style>
 </head>
 
@@ -296,8 +305,9 @@ input, select{
 <input type="number" id="daysToAdd" min="0" placeholder="Days">
 
 <button onclick="calculateDate()">Calculate</button>
+<button onclick="quickAdd(7)">+7</button>
 <button onclick="quickAdd(18)">+18</button>
-<button onclick="quickAdd(30)">+30</button>
+<button onclick="quickAdd(31)">+31</button>
 
 </div>
 
@@ -594,7 +604,7 @@ function autoResizeInput(input){
 }
 
 function enableAutoResize(){
-    document.querySelectorAll("input").forEach(input=>{
+    document.querySelectorAll("input:not([type='date'])").forEach(input=>{
         autoResizeInput(input);
         input.addEventListener("input", function(){
             autoResizeInput(this);
