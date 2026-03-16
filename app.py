@@ -243,6 +243,28 @@ input, select{
 <body>
 
 <button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
+<section>
+<h2>Notes</h2>
+
+<div style="
+background:#fff8c5;
+border-left:5px solid #ffcc00;
+padding:15px;
+border-radius:10px;
+font-size:14px;
+line-height:1.5;
+">
+
+<b>Info:</b><br><br>
+
+• Esta herramienta está en desarrollo.<br>
+• Los valores de moneda son aproximados.<br>
+• Si algo no funciona, refrescar la página.<br>
+• Última actualización: 15 Mar 2026.
+
+</div>
+
+</section>
 <h1>Alexa Builder 🚀</h1>
 
 <div class="top-grid">
@@ -633,6 +655,8 @@ function proximamente(){
     btn.disabled = true; // opcional: lo desactiva
 }
 enableAutoResize();
+
+
 
 </script>
 </body>
