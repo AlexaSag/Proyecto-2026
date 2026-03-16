@@ -253,13 +253,7 @@ padding:15px;
 border-radius:10px;
 font-size:14px;
 ">
-from flask import Flask
 
-app = Flask(__name__)
-
-@app.route("/")
-def inicio():
-    return """
 <!DOCTYPE html>
 <html>
 <head>
@@ -2192,12 +2186,6 @@ document.addEventListener("keydown", function(e){
 </script>
 </body>
 </html>
-"""
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
 
 
 
