@@ -254,6 +254,35 @@ border-radius:10px;
 font-size:14px;
 ">
 
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+
+</section>
+<h1>Alexa Builder 🚀</h1>
+
+<section>
+<h2>Notes</h2>
+<div "
+
+
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def inicio():
+    return """
 <!DOCTYPE html>
 <html>
 <head>
@@ -2186,6 +2215,11 @@ document.addEventListener("keydown", function(e){
 </script>
 </body>
 </html>
+"""
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
 
@@ -2196,10 +2230,13 @@ document.addEventListener("keydown", function(e){
 
 
 
-</pre>
-
+">
+</div>
 </section>
-<h1>Alexa Builder 🚀</h1>
+
+
+
+
 
 <div class="top-grid">
 
@@ -2333,7 +2370,7 @@ document.addEventListener("keydown", function(e){
     </div>
 
 
-  </div> <br>
+  </div>
 </div>
 
 
