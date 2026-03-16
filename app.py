@@ -273,7 +273,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def inicio():
-    return """
+    return 
 <!DOCTYPE html>
 <html>
 <head>
