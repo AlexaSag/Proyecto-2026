@@ -258,15 +258,6 @@ font-size:14px;
 
 
 
-
-
-
-
-
-
-
-</pre>
-
 </section>
 <h1>Alexa Builder 🚀</h1>
 
@@ -2211,27 +2202,9 @@ document.addEventListener("keydown", function(e){
     }
 
 });
-
-</script>
-</body>
-</html>
 """
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
-
-
-
-
-
-
-
-
-">
-</div>
+</textarea>
 </section>
 
 
