@@ -286,7 +286,7 @@ def inicio():
 <!DOCTYPE html>
 <html>
 <head>
-<title>S.A.🧠</title>
+<title>S.A.</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -498,7 +498,7 @@ color:white!important;
     align-items:center;
     justify-content:center;
     gap:8px;
-    flex-wrap:wrap; /* 🔴 permite acomodarse */
+    flex-wrap:wrap; /*  permite acomodarse */
 }
 .currency-input{
     width:70px !important;
@@ -763,19 +763,19 @@ transition:all .2s ease;
 <body>
 <div class="top-right-buttons">
     <button class="ic-toggle" onclick="toggleIC()">IC</button>
-    <button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
+    <button class="dark-toggle" onclick="toggleDark()"> Dark</button>
     <button class="note-toggle" id="noteToggle">📝</button>
 </div>
-<h1>S.A.🧠</h1>
+<h1>S.A.</h1>
 <!------       IC MODAL (fuera del grid)       ------>
 <div id="icModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeIC()">✖</span>
     <h2>IC</h2>
 <div class="ic-grid"> <!-------- botones IC -------->
-<button onclick="addIC('EAD')">📧</button>
-<button onclick="addIC('MOB')">📱M</button>
-<button onclick="addIC('WPH')">📞W</button>
+<button onclick="addIC('EAD')">Email</button>
+<button onclick="addIC('MOB')">Movil</button>
+<button onclick="addIC('WPH')">Work p</button>
 <button onclick="addIC('YOB')">YOB</button>
 <button onclick="addIC('CID')">CID</button>
 <button onclick="addIC('CPW')">CPW</button>
@@ -1289,7 +1289,7 @@ Next:
 <button id="resetNoteBtn" onclick="resetNote()">Reset</button>
 </div>
 
-</div>   <!-- 🔴 ESTE DIV FALTABA -->
+</div>   <!--  ESTE DIV FALTABA -->
 
 <script>
 
@@ -1670,7 +1670,7 @@ payNo.classList.remove("proxy-green","proxy-red");
 if(value==="Yes") payYes.classList.add("proxy-green");
 if(value==="No") payNo.classList.add("proxy-red");
 }
-//                🔴 QUITAR selección visual de Proxy
+//                 QUITAR selección visual de Proxy
 let selectedProxy="";
 function setProxy(value){
     selectedProxy=value;
