@@ -819,11 +819,11 @@ loading="lazy">
     <div style="margin:10px;">
   <strong>Select title:</strong>
 </div>
-<button id="tFac" onclick="setFirstTitle('Fac confirm')">FAC confirm</button>
-<button id="tCancel" onclick="setFirstTitle('cancel')">cancel</button>
-<button id="tNoCancel" onclick="setFirstTitle('no cancel')">NO cancel</button>
-<button id="tPay" onclick="setFirstTitle('pay')">Pay&Release</button>
-<button id="tReturn" onclick="setFirstTitle('return')">Return to CREDIT</button><br><br>
+<button id="tFac" onclick="setFirstTitle('FACTORING CONFIRMED - Released with Spending Limit')">FAC confirm</button>
+<button id="tCancel" onclick="setFirstTitle('HIGH RISK CANCEL - CBO/CA')">cancel</button>
+<button id="tNoCancel" onclick="setFirstTitle('HIGH RISK NO CANCEL - CBO/CA')">NO cancel</button>
+<button id="tPay" onclick="setFirstTitle('HIGH RISK NO CANCEL - PAY & RELEASE')">Pay&Release</button>
+<button id="tReturn" onclick="setFirstTitle('NO CBO/CA CONCERNS - RETURN TO CREDIT')">Return to CREDIT</button><br><br>
     * Linkages: <input id="f1"><br><br>
     * Concerning Spend: <input id="f2"><br><br>
     * CBR: <input id="f3"><br><br>
@@ -928,9 +928,7 @@ loading="lazy">
 <div id="payModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('payModal')">✖</span>
-
-    <H">FFI-Paystubs</h2>
-
+    <h2>FFI-Paystubs</h2>
     <strong>*Payslips:</strong>
     <input id="payPayslips" placeholder="XXXX">
     <br><br>
@@ -1082,11 +1080,11 @@ loading="lazy">
      <div style="margin:10px 0 6px 0;">
   <strong>Select title:</strong>
 </div>
-<button id="ftFac" onclick="setFinalTitle('Fac confirm')">Fac confirm</button>
-<button id="ftCancel" onclick="setFinalTitle('cancel')">cancel</button>
-<button id="ftNoCancel" onclick="setFinalTitle('no cancel')">NO cancel</button>
-<button id="ftPay" onclick="setFinalTitle('pay')">Pay&Release</button>
-<button id="ftReturn" onclick="setFinalTitle('return')">Return to CREDIT</button>
+<button id="ftFac" onclick="setFinalTitle('FACTORING CONFIRMED - Released with Spending Limit')">Fac confirm</button>
+<button id="ftCancel" onclick="setFinalTitle('HIGH RISK CANCEL - CBO/CA')">cancel</button>
+<button id="ftNoCancel" onclick="setFinalTitle('HIGH RISK NO CANCEL - CBO/CA')">NO cancel</button>
+<button id="ftPay" onclick="setFinalTitle('HIGH RISK NO CANCEL - PAY & RELEASE')">Pay&Release</button>
+<button id="ftReturn" onclick="setFinalTitle('NO CBO/CA CONCERNS - RETURN TO CREDIT')">Return to CREDIT</button>
 <br><br>
 * Reason for desicion:
 <input id="finalReason">
@@ -1524,11 +1522,11 @@ function setFirstTitle(value){
     tNoCancel.classList.remove("title-selected");
     tPay.classList.remove("title-selected");
     tReturn.classList.remove("title-selected");
-    if(value==="Fac confirm")tFac.classList.add("title-selected");
-    if(value==="cancel")tCancel.classList.add("title-selected");
-    if(value==="no cancel")tNoCancel.classList.add("title-selected");
-    if(value==="pay")tPay.classList.add("title-selected");
-    if(value==="return")tReturn.classList.add("title-selected");
+    if(value==="FACTORING CONFIRMED - Released with Spending Limit")tFac.classList.add("title-selected");
+    if(value==="HIGH RISK CANCEL - CBO/CA")tCancel.classList.add("title-selected");
+    if(value==="HIGH RISK NO CANCEL - CBO/CA")tNoCancel.classList.add("title-selected");
+    if(value==="HIGH RISK NO CANCEL - PAY & RELEASE")tPay.classList.add("title-selected");
+    if(value==="NO CBO/CA CONCERNS - RETURN TO CREDIT")tReturn.classList.add("title-selected");
 }
 function copyFirst(){
 let text=`********  ${firstTitle}  ********
@@ -1538,7 +1536,7 @@ let text=`********  ${firstTitle}  ********
 * CBO indicators:  ${f4.value}
 * Reason for Decision: ${f5.value}
 * Next steps: ${f6.value}
-************************************************`;
+********************************************************`;
 navigator.clipboard.writeText(text);
 }
 function copyFirst(){
@@ -1847,17 +1845,17 @@ ftCancel.classList.remove("title-selected");
 ftNoCancel.classList.remove("title-selected");
 ftPay.classList.remove("title-selected");
 ftReturn.classList.remove("title-selected");
-if(value==="Fac confirm") ftFac.classList.add("title-selected");
-if(value==="cancel") ftCancel.classList.add("title-selected");
-if(value==="no cancel") ftNoCancel.classList.add("title-selected");
-if(value==="pay") ftPay.classList.add("title-selected");
-if(value==="return") ftReturn.classList.add("title-selected");
+if(value==="FACTORING CONFIRMED - Released with Spending Limit") ftFac.classList.add("title-selected");
+if(value==="HIGH RISK CANCEL - CBO/CA") ftCancel.classList.add("title-selected");
+if(value==="HIGH RISK NO CANCEL - CBO/CA") ftNoCancel.classList.add("title-selected");
+if(value==="HIGH RISK NO CANCEL - PAY & RELEASE") ftPay.classList.add("title-selected");
+if(value==="NO CBO/CA CONCERNS - RETURN TO CREDIT") ftReturn.classList.add("title-selected");
 }
 function copyFinal(){
 let text=`********  ${finalTitle}  ********
 * Reason for decision: ${finalReason.value}
 * Next steps: ${finalNext.value}
-************************************************`;
+********************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyFinalBtn"));
 }
