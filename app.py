@@ -97,16 +97,58 @@ grid-auto-flow:dense;     /*grid-auto-flow:dense;*/
 }
 .ffi-content{
     animation:modalPop .18s ease;
-    background:#1c1c1e;
+
+    background:rgba(0,122,255,0.12);   /* 🔵 azul glass */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    border:1px solid rgba(0,122,255,0.2);
+
     font-size:13px;
     padding:10px;
     border-radius:18px;
-    color:white;   /* letras blancas */
-    box-shadow:0 15px 40px rgba(0,0,0,0.35);
+    color:var(--text);
+
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+
+    transform: scale(0.88);
+    transform-origin: top center;
 }
+
 .ffi-content{
     transform: scale(0.88);       /* 🔥 ajusta aquí */
     transform-origin: top center;
+}
+body.dark .ffi-content{
+    background:rgba(255,255,255,0.08);   /* 🔥 glass gris */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    color:white;
+
+    box-shadow:0 20px 50px rgba(0,0,0,0.6);
+}
+body:not(.dark) .ffi-content h2,
+body:not(.dark) .ffi-content h3{
+    color:#007aff;
+}
+body.dark .ffi-content h2,
+body.dark .ffi-content h3{
+    color:#007aff;
+    opacity:0.95;
+}
+}
+body.dark .ffi-content input{
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.2);
+    color:white;
+}
+
+body:not(.dark) .ffi-content input{
+    background:rgba(255,255,255,0.7);
+    border:1px solid rgba(0,122,255,0.2);
 }
 
 @keyframes modalPop{
@@ -397,18 +439,13 @@ margin:3px;
 width:100%;
 min-height:80px;
 max-height:350px;
-
 border:none;
 border-radius:12px;
-
 padding:10px;
-
 resize:none;
 overflow:hidden;
-
 background:#2c2c2e;
 color:white;
-
 font-family:inherit;
 font-size:14px;
 line-height:1.4;
@@ -430,20 +467,15 @@ margin-top:8px;
 position:absolute;
 top:10px;
 right:12px;
-
 width:24px;
 height:24px;
-
 border-radius:50%;
 background:#ff3b30;
 color:white;
-
 font-size:13px;
-
 display:flex;
 align-items:center;
 justify-content:center;
-
 cursor:pointer;
 transition:.2s;
 }
@@ -478,6 +510,154 @@ display:none;
 transition:all .2s ease;
 }
 
+.ffi-content{
+    line-height:.2;   /* 🔥 reduce todo el espacio vertical */
+}
+.ffi-content strong{
+    display:inline-block;
+    margin-bottom:1px;
+}
+
+.ffi-content input{
+    margin-bottom:1px; 
+}
+#icModal .ffi-content{
+    background: rgba(20,20,20,0.6);   /* 🔥 negro glass */
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+
+    color: white;
+}
+#icModal button{
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+#icModal button:hover{
+    background: rgba(255,255,255,0.15);
+}
+#icModal h2{
+    color: #0a84ff;   /* azul Apple elegante */
+    font-weight:600;
+}
+#icModal h2{
+    color:#ffd60a;   /* 🔥 amarillo tipo Apple */
+    font-weight:600;
+}
+#resultIC{
+    margin-top:10px;
+    padding:6px 10px;
+
+    background:rgba(255,255,255,0.08);
+    border-radius:10px;
+
+    font-size:12px;
+    text-align:center;
+
+    display:block;
+}
+#resultIC{
+    color:#ffd60a;
+    font-weight:500;
+}
+
+
+#calcInput{
+    width:100%;
+    font-size:18px;
+    padding:10px;
+    border-radius:12px;
+    text-align:right;
+}
+.calc{
+    max-width:220px;
+    margin:auto;
+}
+
+#calcDisplay{
+font-size: clamp(18px, 4vw, 28px);
+    width:100%;
+    max-width:none !important;
+    font-size:32px;
+    text-align:right;
+    padding:12px;
+    border:none;
+    margin-bottom:10px;
+    background:var(--input);
+    color:var(--text);
+}
+
+.calc-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.calc button{
+    height:40px;
+    border-radius:30%;
+    border:none;
+    font-size:12px;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.15s;
+}
+
+/* números */
+.calc button{
+    background:#2c2c2e;
+    color:white;
+}
+
+/* gris (top row) */
+.calc .gray{
+    background:#a5a5a5;
+    color:black;
+}
+
+/* naranja (operadores) */
+.calc .orange{
+    background:#ff9f0a;
+    color:white;
+}
+
+/* botón 0 largo */
+.calc .zero{
+    grid-column:span 2;
+    border-radius:25px;
+    text-align:left;
+    padding-left:18px;
+}
+
+/* efecto press */
+.calc button:active{
+    transform:scale(0.92);
+    filter:brightness(1.2);
+}
+#calcInput{
+    width:100%;
+    font-size:18px;
+    padding:10px;
+    border-radius:12px;
+    text-align:right;
+}
+#calcDisplay{
+    width:100% !important;
+    max-width:none !important;
+
+    font-size:26px;
+    text-align:right;
+
+    padding:10px;
+    border-radius:12px;
+
+    overflow-x:auto;      /* 🔥 permite scroll */
+    white-space:nowrap;   /* 🔥 no corta números */
+}
 /* ===============                  =============== */
 /* ===============       BODY       =============== */
 /* ===============                  =============== */
@@ -512,7 +692,6 @@ transition:all .2s ease;
 <button id="copyICBtn" onclick="copyIC()">Copy</button>
 <button id="resetICBtn" onclick="resetIC()">Reset</button>
 </div>
-
 <div id="resultIC" class="result-animated fade-in"></div>
 </div>
 </div>
@@ -582,6 +761,8 @@ transition:all .2s ease;
 <h2>Street View</h2>
 <input type="text" id="streetSearch" placeholder="Buscar dirección">
 <button onclick="searchStreet()">Buscar</button>
+<button onclick="openMap()">Ver mapa</button>
+<button onclick="openMapFull()">Abrir en Google Maps</button>
 <br><br>
 <iframe
 id="streetFrame"
@@ -606,6 +787,9 @@ style="border:0;border-radius:12px;display:none"
 loading="lazy">
 </iframe>
 </section>
+
+
+
 <!-- ================= CURRENCY CONVERTER (AL FINAL) ================= -->
 <section>
 <h2>Currency Converter</h2>
@@ -632,7 +816,9 @@ loading="lazy">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeFirst()">✖</span>
     <h2>1rst WORK</h2>
-   <strong>Select title : </strong><br>
+    <div style="margin:10px;">
+  <strong>Select title:</strong>
+</div>
 <button id="tFac" onclick="setFirstTitle('Fac confirm')">FAC confirm</button>
 <button id="tCancel" onclick="setFirstTitle('cancel')">cancel</button>
 <button id="tNoCancel" onclick="setFirstTitle('no cancel')">NO cancel</button>
@@ -693,7 +879,7 @@ loading="lazy">
 <div id="ffiModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('ffiModal')">✖</span>
-    <h3>FFI/BI review</h3>
+    <h2>FFI/BI review</h2>
     <!-- DOC VERIFY -->
     <strong>DOC verify / Visual Checks</strong>
     <button id="docYes" onclick="setDocVerify('Yes')">Yes</button>
@@ -743,7 +929,7 @@ loading="lazy">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('payModal')">✖</span>
 
-    <h3>FFI-Paystubs</h3>
+    <H">FFI-Paystubs</h2>
 
     <strong>*Payslips:</strong>
     <input id="payPayslips" placeholder="XXXX">
@@ -767,7 +953,7 @@ loading="lazy">
 <div id="businessModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('businessModal')">✖</span>
-    <h3>Master Business Lincense</h3>
+    <h2>Master Business Lincense</h2>
     <strong>Date issued:</strong>
     <input id="busDate" placeholder="XXXX">
     <br><br>
@@ -797,7 +983,7 @@ loading="lazy">
 <div id="incorpModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('incorpModal')">✖</span>
-    <h3>Certificate of Incorporation</h3>
+    <h2>Certificate of Incorporation</h2>
     <strong>Business incorporated on:</strong>
     <input id="incBusinessOn" placeholder="date">
     <br><br>
@@ -820,37 +1006,37 @@ loading="lazy">
 <!-- ================= ASSES CORP MODAL ================= -->
 <div id="assesModalC" class="ffi-modal">
   <div class="ffi-content">
-    <span class="close-btn" onclick="closeTemplate('assesModal')">✖</span>
-    <h3>Corporate Notice of Assesment</h3>
+    <span class="close-btn" onclick="closeTemplate('assesModalC')">✖</span>
+    <h2>Corporate Notice of Assesment</h2>
     <strong>Tax Year:</strong>
-    <input id="assYear" placeholder="year">
+    <input id="assYearC" placeholder="year">
     <br><br>
     <strong>Date:</strong>
-    <input id="assDate" placeholder="date">
+    <input id="assDateC" placeholder="date">
     <br><br>
     <strong>Bus Name:</strong>
-    <input id="assBus" placeholder="name">
+    <input id="assBusC" placeholder="name">
     <br><br>
     <strong>Bus #:</strong>
-    <input id="assBusNum" placeholder="number">
+    <input id="assBusNumC" placeholder="number">
     <br><br>
     <strong>Part 1 Tax:</strong>
-    <input id="assPart" placeholder="$">
+    <input id="assPartC" placeholder="$">
     <br><br>
     <strong>Result of Assesment:</strong>
-    <input id="assResult" placeholder="$">
+    <input id="assResultC" placeholder="$">
     <br><br>
     <div class="copy-center">
-      <button id="copyAssBtn" onclick="copyAsses()">Copy</button>
-      <button id="resetAssBtn" onclick="resetAsses()">Reset</button>
-    </div>
+      <button id="copyAssBtnC" onclick="copyAssesC()">Copy</button>
+<button id="resetAssBtnC" onclick="resetAssesC()">Reset</button>
+              </div>
   </div>
 </div>
 <!-- ================= ASSES PERSONAL MODAL ================= -->
 <div id="assesModalP" class="ffi-modal">
   <div class="ffi-content">
-    <span class="close-btn" onclick="closeTemplate('assesModal')">✖</span>
-    <h3>Personal Notice of Assesment</h3>
+    <span class="close-btn" onclick="closeTemplate('assesModalP')">✖</span>
+    <h2>Personal Notice of Assesment</h2>
     <strong>Tax Year:</strong>
     <input id="assYear" placeholder="year">
     <br><br>
@@ -864,16 +1050,15 @@ loading="lazy">
     <input id="assResult" placeholder="$">
     <br><br>
     <div class="copy-center">
-      <button id="copyAssBtn" onclick="copyAsses()">Copy</button>
-      <button id="resetAssBtn" onclick="resetAsses()">Reset</button>
-    </div>
+      <button id="copyAssBtnP" onclick="copyAssesP()">Copy</button>
+<button id="resetAssBtnP" onclick="resetAssesP()">Reset</button></div>
   </div>
 </div>
 <!-- ================= INCOMPLETE MODAL ================= -->
 <div id="incompleteModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('incompleteModal')">✖</span>
-    <h3>Incomplete - We need</h3>
+    <h2>Incomplete - We need</h2>
     <strong>* We need:</strong>
     <input id="incWe" placeholder="XXXX">
     <br><br>
@@ -894,7 +1079,9 @@ loading="lazy">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('finalModal')">✖</span>
     <h2>Outcome decision/Final outcome</h2>
-<strong>Select title :</strong><br>
+     <div style="margin:10px 0 6px 0;">
+  <strong>Select title:</strong>
+</div>
 <button id="ftFac" onclick="setFinalTitle('Fac confirm')">Fac confirm</button>
 <button id="ftCancel" onclick="setFinalTitle('cancel')">cancel</button>
 <button id="ftNoCancel" onclick="setFinalTitle('no cancel')">NO cancel</button>
@@ -917,7 +1104,7 @@ loading="lazy">
 <div id="factorModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('factorModal')">✖</span>
-    <h3>Factoring high risk concerns</h3>
+    <h2>Factoring high risk concerns</h2>
     <h5>Only use with factorin cases, template is sent to SE CRAT team via @</h5>
     <strong>SE#:</strong>
     <input id="facSE" placeholder="number">
@@ -959,7 +1146,7 @@ loading="lazy">
 <div id="gnaHighModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('gnaHighModal')">✖</span>
-    <h3>GNA High Risk No Cancel CBO</h3>
+    <h2>GNA High Risk No Cancel CBO</h2>
     <strong>Referred for:</strong>
     <input id="gnaRef" placeholder="XXXX">
     <br><br>
@@ -985,7 +1172,7 @@ loading="lazy">
 <div id="gnaFfiModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('gnaFfiModal')">✖</span>
-    <h3>GNA FFI-Review</h3>
+    <h2>GNA FFI-Review</h2>
     <strong>DOC Verify/Visual Checks Passed:</strong>
     <input id="gnaDocFfi" placeholder="yes/no">
     <br><br>
@@ -1008,7 +1195,7 @@ loading="lazy">
 <div id="gnaFfiModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('gnaFfiModal')">✖</span>
-    <h3>GNA FFI</h3>
+    <h2>GNA FFI</h2>
     <strong>DOC:</strong>
     <input id="gnaDocFfi" placeholder="XXXX">
     <br><br>
@@ -1578,30 +1765,56 @@ function resetIncorp(){
 resetFeedback(document.getElementById("resetIncorpBtn"));
 }
 ////////////////////////////////////////////////////
-//// ASSES TEMPLATE
+////                       ASSES TEMPLATE
 ////////////////////////////////////////////////////
-function copyAsses(){
+
+// 🔹 PERSONAL
+function copyAssesP(){
 let text=`********  Personal Notices of Assesment  ********
 *Year: ${assYear.value}
 *Date: ${assDate.value}
-*Bus: ${assBus.value}
-*Bus #: ${assBusNum.value}
-*Part 1: ${assPart.value}
+*Name: ${assBus.value}
 *Result: ${assResult.value}
 ************************************************`;
 navigator.clipboard.writeText(text);
-copyFeedback(document.getElementById("copyAssBtn"));
+copyFeedback(document.getElementById("copyAssBtnP"));
 }
-function resetAsses(){
+
+function resetAssesP(){
 [
 "assYear",
 "assDate",
 "assBus",
-"assBusNum",
-"assPart",
 "assResult"
 ].forEach(id=>document.getElementById(id).value="");
-resetFeedback(document.getElementById("resetAssBtn"));
+resetFeedback(document.getElementById("resetAssBtnP"));
+}
+
+
+// 🔹 CORPORATE
+function copyAssesC(){
+let text=`********  Corporate Notices of Assesment  ********
+*Year: ${assYearC.value}
+*Date: ${assDateC.value}
+*Bus: ${assBusC.value}
+*Bus #: ${assBusNumC.value}
+*Part 1: ${assPartC.value}
+*Result: ${assResultC.value}
+************************************************`;
+navigator.clipboard.writeText(text);
+copyFeedback(document.getElementById("copyAssBtnC"));
+}
+
+function resetAssesC(){
+[
+"assYearC",
+"assDateC",
+"assBusC",
+"assBusNumC",
+"assPartC",
+"assResultC"
+].forEach(id=>document.getElementById(id).value="");
+resetFeedback(document.getElementById("resetAssBtnC"));
 }
 ////////////////////////////////////////////////////
 //// INCOMPLETE TEMPLATE
@@ -1866,43 +2079,94 @@ window.addEventListener("DOMContentLoaded", function(){
 
 
 ////////////////////////////////////////////////////
-//// maps google
+////          FUNCTION    MAPS / STREET VIEW 
 ////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+//// MAPS / STREET VIEW (FIX COMPLETO)
+////////////////////////////////////////////////////
+
+let lastCoords = null;
+
 async function searchStreet(){
+
 let address = document.getElementById("streetSearch").value;
+
 if(!address){
-alert("Escribe una dirección");
-return;
+    alert("Escribe una dirección");
+    return;
 }
+
 try{
-let url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(address);
-let res = await fetch(url);
-let data = await res.json();
-if(data.length === 0){
-alert("Dirección no encontrada");
-return;
-}
-let lat = data[0].lat;
-let lon = data[0].lon;
-document.getElementById("streetFrame").src =
-`https://www.google.com/maps?q=&layer=c&cbll=${lat},${lon}&cbp=11,0,0,0,0&output=svembed`;
-document.getElementById("streetFrame").style.display="block";
+    let url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(address);
+    let res = await fetch(url);
+    let data = await res.json();
+
+    if(data.length === 0){
+        alert("Dirección no encontrada");
+        return;
+    }
+
+    let lat = data[0].lat;
+    let lon = data[0].lon;
+
+    // 🔥 GUARDAR COORDENADAS
+    lastCoords = { lat, lon };
+
+    // 🔥 STREET VIEW DIRECTO
+    document.getElementById("streetFrame").src =
+    `https://www.google.com/maps?q=&layer=c&cbll=${lat},${lon}&cbp=11,0,0,0,0&output=svembed`;
+
+    document.getElementById("streetFrame").style.display = "block";
+
 }catch(error){
-alert("Error buscando la dirección");
+    alert("Error buscando la dirección");
 }
+
 }
+
+
+//// MAPA NORMAL (BOTÓN "VER MAPA")
+
+
+function openMap(){
+
+    if(!lastCoords){
+        alert("Busca una dirección primero");
+        return;
+    }
+
+    let {lat, lon} = lastCoords;
+
+    document.getElementById("streetFrame").src =
+    `https://www.google.com/maps?q=${lat},${lon}&z=18&output=embed`;
+
+    document.getElementById("streetFrame").style.display = "block";
+}
+
+//// MAPA COMPLETO (GOOGLE REAL CON STREET VIEW)
+
+function openMapFull(){
+
+    if(!lastCoords){
+        alert("Busca una dirección primero");
+        return;
+    }
+
+    let {lat, lon} = lastCoords;
+
+    window.open(
+        `https://www.google.com/maps/@${lat},${lon},18z`,
+        "_blank"
+    );
+}
+
+//// ENTER PARA BUSCAR
 document.getElementById("streetSearch").addEventListener("keypress", function(e){
-if(e.key === "Enter"){
-searchStreet();
-}
+    if(e.key === "Enter"){
+        searchStreet();
+    }
 });
 
-
-document.getElementById("googleSearch").addEventListener("keypress", function(e){
-if(e.key === "Enter"){
-searchGoogle();
-}
-});
 ////////////////////////////////////////////////////
 //// GOOGLE SEARCH
 ////////////////////////////////////////////////////
@@ -1916,6 +2180,81 @@ window.open(
 "https://www.google.com/search?q=" + encodeURIComponent(query),
 "_blank"
 );
+}
+
+////////////////////////////////////////////////////
+////                     FUNCTION CALCULATOR
+////////////////////////////////////////////////////
+
+let current = "0";
+let operator = null;
+let prev = null;
+
+function updateDisplay(){
+    document.getElementById("calcDisplay").value = current;
+}
+
+function pressNum(num){
+    if(current === "0") current = num;
+    else current += num;
+    updateDisplay();
+}
+
+function pressOp(op){
+    operator = op;
+    prev = current;
+    current = "0";
+}
+
+function calculate(){
+    if(prev === null || operator === null) return;
+
+    let result;
+    let a = parseFloat(prev);
+    let b = parseFloat(current);
+
+    if(operator === "+") result = a + b;
+    if(operator === "-") result = a - b;
+    if(operator === "*") result = a * b;
+    if(operator === "/") result = a / b;
+
+    current = result.toString();
+    operator = null;
+    prev = null;
+    updateDisplay();
+}
+
+function clearCalc(){
+    current = "0";
+    operator = null;
+    prev = null;
+    updateDisplay();
+}
+
+function plusMinus(){
+    current = (parseFloat(current) * -1).toString();
+    updateDisplay();
+}
+
+function percent(){
+    current = (parseFloat(current) / 100).toString();
+    updateDisplay();
+}
+function press(val){
+    document.getElementById("calcInput").value += val;
+}
+
+function calculate(){
+    try{
+        let result = eval(document.getElementById("calcInput").value);
+        document.getElementById("calcInput").value = result;
+    }catch{
+        document.getElementById("calcInput").value = "Error";
+    }
+}
+
+function clearCalc(){
+    document.getElementById("calcInput").value = "";
 }
 
 ////////////////////////////////////////////////////
