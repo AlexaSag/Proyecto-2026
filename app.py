@@ -98,10 +98,15 @@ grid-auto-flow:dense;     /*grid-auto-flow:dense;*/
 .ffi-content{
     animation:modalPop .18s ease;
     background:#1c1c1e;
-    padding:20px;
+    font-size:13px;
+    padding:10px;
     border-radius:18px;
     color:white;   /* letras blancas */
     box-shadow:0 15px 40px rgba(0,0,0,0.35);
+}
+.ffi-content{
+    transform: scale(0.88);       /* 🔥 ajusta aquí */
+    transform-origin: top center;
 }
 
 @keyframes modalPop{
@@ -249,7 +254,7 @@ color:white!important;
 }
 /* ===== CURRENCY end ===== */
 .swap{ font-size:18px; cursor:pointer; }
-.copy-center{ text-align:center; margin-top:30px; }
+.copy-center{ text-align:center; margin-top:7px; }
 /* Auto resize */
 input:not(#daysToAdd):not(#baseDate), select{
     padding:6px 8px;
@@ -462,21 +467,17 @@ font-size:14px;
 position:fixed;
 top:120px;
 right:20px;
-
 background:#1c1c1e;
 color:white;
-
 padding:18px;
 border-radius:18px;
-
 box-shadow:0 20px 45px rgba(0,0,0,0.35);
-
-width:260px;
+width:400px;     /* 🔥 más ancho */
 max-width:420px;
-
 display:none;
 transition:all .2s ease;
 }
+
 /* ===============                  =============== */
 /* ===============       BODY       =============== */
 /* ===============                  =============== */
@@ -525,13 +526,14 @@ transition:all .2s ease;
 <button onclick="openTemplate('firstModal')">1rst WORK</button>
 <button onclick="openTemplate('cbrModal')">CBR</button>
 <button onclick="openTemplate('ffiModal')">FFI</button>
-<button onclick="openTemplate('payModal')">Paystubs</button>
-<button onclick="openTemplate('businessModal')">Business</button>
-<button onclick="openTemplate('incorpModal')">Incorp</button>
-<button onclick="openTemplate('assesModal')">Asses</button>
+<button onclick="openTemplate('payModal')">FFI-Paystubs</button>
+<button onclick="openTemplate('businessModal')">Business License</button>
+<button onclick="openTemplate('incorpModal')">Certificate of Incorporation</button>
+<button onclick="openTemplate('assesModalP')">Personal Asses</button>
+<button onclick="openTemplate('assesModalC')">Corporate Asses</button>
 <button onclick="openTemplate('incompleteModal')">Incomplete</button>
-<button onclick="openTemplate('finalModal')">Final</button>
-<button onclick="openTemplate('factorModal')">Factor</button>
+<button onclick="openTemplate('finalModal')">Final/Oucome decision</button>
+<button onclick="openTemplate('factorModal')">SE Factoring Templates</button>
 <button onclick="openTemplate('gnaHighModal')">GNA high</button>
 <button onclick="openTemplate('gnaFfiModal')">GNA FFI</button>
 <button id="resetAllTemplatesBtn" onclick="resetAllTemplates()">Reset</button>
@@ -631,17 +633,17 @@ loading="lazy">
     <span class="close-btn" onclick="closeFirst()">✖</span>
     <h2>1rst WORK</h2>
    <strong>Select title : </strong><br>
-<button id="tFac" onclick="setFirstTitle('Fac confirm')">Fac confirm</button>
+<button id="tFac" onclick="setFirstTitle('Fac confirm')">FAC confirm</button>
 <button id="tCancel" onclick="setFirstTitle('cancel')">cancel</button>
-<button id="tNoCancel" onclick="setFirstTitle('no cancel')">no cancel</button>
-<button id="tPay" onclick="setFirstTitle('pay')">pay</button>
-<button id="tReturn" onclick="setFirstTitle('return')">return</button><br><br>
-    1.- asdfads: <input id="f1"><br><br>
-    2.- asdfads: <input id="f2"><br><br>
-    3.- asdfads: <input id="f3"><br><br>
-    4.- asdfads: <input id="f4"><br><br>
-    5.- asdfads: <input id="f5"><br><br>
-    6.- asdfads: <input id="f6">
+<button id="tNoCancel" onclick="setFirstTitle('no cancel')">NO cancel</button>
+<button id="tPay" onclick="setFirstTitle('pay')">Pay&Release</button>
+<button id="tReturn" onclick="setFirstTitle('return')">Return to CREDIT</button><br><br>
+    * Linkages: <input id="f1"><br><br>
+    * Concerning Spend: <input id="f2"><br><br>
+    * CBR: <input id="f3"><br><br>
+    * CBO indicators: <input id="f4"><br><br>
+    * Reason for Decision: <input id="f5"><br><br>
+    * Next steps: <input id="f6">
     <div class="copy-center">
 <button id="copyFirstBtn" onclick="copyFirst()">Copy FFI</button>
 <button id="resetFirstBtn" onclick="resetFirst()">Reset</button>
@@ -652,34 +654,34 @@ loading="lazy">
 <div id="cbrModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('cbrModal')">✖</span>
-    <h3>CBR</h3>
-    <strong>Type:</strong>
-    <input id="cbrType" placeholder="XXXX">
+    <h2>CBR Review</h2>
+    <strong>Type of CBR and date:</strong>
+    <input id="cbrType" placeholder="Origin and date">
     <br><br>
-    <strong>AVAIL:</strong>
+    <strong>AVAIL CR:</strong>
     <input id="cbrAvail" placeholder="$$$$">
-    <strong>CR:</strong>
+    <strong>* UTILISED CR:</strong>
     <input id="cbrCR" placeholder="$$$$">
-    <strong>DC %:</strong>
-    <input type="number" id="cbrDC" placeholder="##">
+    <strong>DC :</strong>
+    <input type="number" id="cbrDC" placeholder="%">
     <br><br>
-    <strong>OPEN:</strong>
-    <input type="number" id="cbrOpen" placeholder="##">
-    <strong>DATE:</strong>
-    <input type="number" id="cbrDate" placeholder="##">
+    <strong>* # OF OPEN & ACTIVE TRADES:</strong>
+    <input type="number" id="cbrOpen" placeholder="#">
+    <strong>* DATE OF OLDEST TRDE:</strong>
+    <input type="number" id="cbrDate" placeholder="year">
     <br><br>
-    <strong>DATE OF:</strong>
-    <input type="number" id="cbrDateOf" placeholder="##">
+    <strong>* DATE OF NEWEST TRDE:</strong>
+    <input type="number" id="cbrDateOf" placeholder="year">
     <br><br>
-    <strong>INQUIR:</strong>
-    <input type="number" id="cbrInquir" placeholder="##">
-    <strong>FIC:</strong>
-    <input type="number" id="cbrFic" placeholder="##">
+    <strong>* INQUIRIES(last 12 months):</strong>
+    <input type="number" id="cbrInquir" placeholder="#">
+    <strong>*FICO:</strong>
+    <input type="number" id="cbrFic" placeholder="####">
     <br><br>
-    <strong>MISC:</strong>
-    <input id="cbrMisc" placeholder="XXXX">
-    <strong>ON FILE:</strong>
-    <input id="cbrFile" placeholder="XXXX">
+    <strong>*MISCELLANEOUS INFO:</strong>
+    <input id="cbrMisc" placeholder="info">
+    <strong>ON FILE SINCE:</strong>
+    <input id="cbrFile" placeholder="date">
     <br><br>
     <div class="copy-center">
       <button id="copyCBRBtn" onclick="copyCBR()">Copy</button>
@@ -691,7 +693,7 @@ loading="lazy">
 <div id="ffiModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('ffiModal')">✖</span>
-    <h3>FFI</h3>
+    <h3>FFI/BI review</h3>
     <!-- DOC VERIFY -->
     <strong>DOC verify / Visual Checks</strong>
     <button id="docYes" onclick="setDocVerify('Yes')">Yes</button>
@@ -723,6 +725,7 @@ loading="lazy">
     <strong>Month2: $</strong>
     <input type="text" id="month2Input" placeholder="Month">
     </div>
+    
     <br><br>
     <!-- Outcome en nueva línea -->
     <strong>Outcome: </strong>
@@ -740,18 +743,18 @@ loading="lazy">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('payModal')">✖</span>
 
-    <h3>Paystubs</h3>
+    <h3>FFI-Paystubs</h3>
 
-    <strong>Payslips:</strong>
+    <strong>*Payslips:</strong>
     <input id="payPayslips" placeholder="XXXX">
     <br><br>
-    <strong>Business:</strong>
+    <strong>*Business Name/Add:</strong>
     <input id="payBusiness" placeholder="XXXX">
     <br><br>
-    <strong>Recip:</strong>
+    <strong>*Recipient:</strong>
     <input id="payRecip" placeholder="XXXX">
     <br><br>
-    <strong>Gross:</strong>
+    <strong>*Gross Pay:</strong>
     <input id="payGross" placeholder="XXXX">
     <br><br>
     <div class="copy-center">
@@ -764,20 +767,20 @@ loading="lazy">
 <div id="businessModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('businessModal')">✖</span>
-    <h3>Business</h3>
-    <strong>Date:</strong>
+    <h3>Master Business Lincense</h3>
+    <strong>Date issued:</strong>
     <input id="busDate" placeholder="XXXX">
     <br><br>
-    <strong>Business:</strong>
+    <strong>Business Name:</strong>
     <input id="busBusiness" placeholder="XXXX">
     <br><br>
-    <strong>Name:</strong>
+    <strong>Legal Name:</strong>
     <input id="busName" placeholder="XXXX">
     <br><br>
-    <strong>Reg #:</strong>
+    <strong>Registration #:</strong>
     <input id="busReg" placeholder="XXXX">
     <br><br>
-    <strong>Legal:</strong>
+    <strong>Legal business entity:</strong>
     <button id="legalSole" onclick="setLegal('sole proprietorship')">Sole</button>
     <button id="legalPartner" onclick="setLegal('partnership')">Partnership</button>
     <br><br>
@@ -794,18 +797,18 @@ loading="lazy">
 <div id="incorpModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('incorpModal')">✖</span>
-    <h3>Incorp</h3>
-    <strong>Business on:</strong>
-    <input id="incBusinessOn" placeholder="XXXX">
+    <h3>Certificate of Incorporation</h3>
+    <strong>Business incorporated on:</strong>
+    <input id="incBusinessOn" placeholder="date">
     <br><br>
     <strong>Business name:</strong>
-    <input id="incBusinessName" placeholder="XXXX">
+    <input id="incBusinessName" placeholder="name">
     <br><br>
-    <strong>Incorp #:</strong>
-    <input id="incNumber" placeholder="XXXX">
+    <strong>Incorporation number:</strong>
+    <input id="incNumber" placeholder="#">
     <br><br>
-    <strong>Direc:</strong>
-    <input id="incDirec" placeholder="XXXX">
+    <strong>Director/s:</strong>
+    <input id="incDirec" placeholder="name">
     <br><br>
     <div class="copy-center">
       <button id="copyIncorpBtn" onclick="copyIncorp()">Copy</button>
@@ -813,28 +816,52 @@ loading="lazy">
     </div>
   </div>
 </div>
-<!-- ================= ASSES MODAL ================= -->
-<div id="assesModal" class="ffi-modal">
+
+<!-- ================= ASSES CORP MODAL ================= -->
+<div id="assesModalC" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('assesModal')">✖</span>
-    <h3>ASSES</h3>
-    <strong>Year:</strong>
-    <input id="assYear" placeholder="XXXX">
+    <h3>Corporate Notice of Assesment</h3>
+    <strong>Tax Year:</strong>
+    <input id="assYear" placeholder="year">
     <br><br>
     <strong>Date:</strong>
-    <input id="assDate" placeholder="XXXX">
+    <input id="assDate" placeholder="date">
     <br><br>
-    <strong>Bus:</strong>
-    <input id="assBus" placeholder="XXXX">
+    <strong>Bus Name:</strong>
+    <input id="assBus" placeholder="name">
     <br><br>
     <strong>Bus #:</strong>
-    <input id="assBusNum" placeholder="XXXX">
+    <input id="assBusNum" placeholder="number">
     <br><br>
-    <strong>Part 1:</strong>
-    <input id="assPart" placeholder="XXXX">
+    <strong>Part 1 Tax:</strong>
+    <input id="assPart" placeholder="$">
     <br><br>
-    <strong>Result:</strong>
-    <input id="assResult" placeholder="XXXX">
+    <strong>Result of Assesment:</strong>
+    <input id="assResult" placeholder="$">
+    <br><br>
+    <div class="copy-center">
+      <button id="copyAssBtn" onclick="copyAsses()">Copy</button>
+      <button id="resetAssBtn" onclick="resetAsses()">Reset</button>
+    </div>
+  </div>
+</div>
+<!-- ================= ASSES PERSONAL MODAL ================= -->
+<div id="assesModalP" class="ffi-modal">
+  <div class="ffi-content">
+    <span class="close-btn" onclick="closeTemplate('assesModal')">✖</span>
+    <h3>Personal Notice of Assesment</h3>
+    <strong>Tax Year:</strong>
+    <input id="assYear" placeholder="year">
+    <br><br>
+    <strong>Date:</strong>
+    <input id="assDate" placeholder="date">
+    <br><br>
+    <strong>Name:</strong>
+    <input id="assBus" placeholder="name">
+    <br><br>
+    <strong>Total income:</strong>
+    <input id="assResult" placeholder="$">
     <br><br>
     <div class="copy-center">
       <button id="copyAssBtn" onclick="copyAsses()">Copy</button>
@@ -846,14 +873,14 @@ loading="lazy">
 <div id="incompleteModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('incompleteModal')">✖</span>
-    <h3>Incomplete</h3>
-    <strong>We:</strong>
+    <h3>Incomplete - We need</h3>
+    <strong>* We need:</strong>
     <input id="incWe" placeholder="XXXX">
     <br><br>
-    <strong>Dead:</strong>
+    <strong>* Deadline:</strong>
     <input id="incDead" placeholder="XXXX">
     <br><br>
-    <strong>Additional:</strong>
+    <strong>*Additional Comments:</strong>
     <input id="incAdditional" placeholder="XXXX">
     <br><br>
     <div class="copy-center">
@@ -866,18 +893,18 @@ loading="lazy">
 <div id="finalModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('finalModal')">✖</span>
-    <h2>Final</h2>
+    <h2>Outcome decision/Final outcome</h2>
 <strong>Select title :</strong><br>
 <button id="ftFac" onclick="setFinalTitle('Fac confirm')">Fac confirm</button>
 <button id="ftCancel" onclick="setFinalTitle('cancel')">cancel</button>
-<button id="ftNoCancel" onclick="setFinalTitle('no cancel')">no cancel</button>
-<button id="ftPay" onclick="setFinalTitle('pay')">pay</button>
-<button id="ftReturn" onclick="setFinalTitle('return')">return</button>
+<button id="ftNoCancel" onclick="setFinalTitle('no cancel')">NO cancel</button>
+<button id="ftPay" onclick="setFinalTitle('pay')">Pay&Release</button>
+<button id="ftReturn" onclick="setFinalTitle('return')">Return to CREDIT</button>
 <br><br>
-Reason:
+* Reason for desicion:
 <input id="finalReason">
 <br><br>
-Next:
+* Next steps:
 <input id="finalNext">
 <br><br>
 <div class="copy-center">
@@ -890,36 +917,37 @@ Next:
 <div id="factorModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('factorModal')">✖</span>
-    <h3>Factor</h3>
-    <strong>SE:</strong>
-    <input id="facSE" placeholder="XXXX">
+    <h3>Factoring high risk concerns</h3>
+    <h5>Only use with factorin cases, template is sent to SE CRAT team via @</h5>
+    <strong>SE#:</strong>
+    <input id="facSE" placeholder="number">
     <br><br>
     <strong>Name:</strong>
-    <input id="facName" placeholder="XXXX">
+    <input id="facName" placeholder="name">
     <br><br>
-    <strong>Lname:</strong>
-    <input id="facLname" placeholder="XXXX">
+    <strong>Legal name:</strong>
+    <input id="facLname" placeholder="name">
     <br><br>
-    <strong>Date:</strong>
-    <input id="facDate" placeholder="XXXX">
+    <strong>Date opened:</strong>
+    <input id="facDate" placeholder="date">
     <br><br>
-    <strong>Card:</strong>
-    <input id="facCard" placeholder="XXXX">
+    <strong>Card Links:</strong>
+    <input id="facCard" placeholder="links">
     <br><br>
-    <strong>CM:</strong>
-    <input id="facCM" placeholder="XXXX">
+    <strong>CM Name:</strong>
+    <input id="facCM" placeholder="name">
     <br><br>
-    <strong>Conf:</strong>
-    <input id="facConf" placeholder="XXXX">
+    <strong>Confirmed linked to SE:</strong>
+    <input id="facConf" placeholder="">
     <br><br>
     <strong>How:</strong>
-    <input id="facHow" placeholder="XXXX">
+    <input id="facHow" placeholder="explanation">
     <br><br>
-    <strong>Total:</strong>
-    <input id="facTotal" placeholder="XXXX">
+    <strong>Total Factored Charges:</strong>
+    <input id="facTotal" placeholder="Charges">
     <br><br>
-    <strong>Rec:</strong>
-    <input id="facRec" placeholder="XXXX">
+    <strong>Recommendation:</strong>
+    <input id="facRec" placeholder="recommendation">
     <br><br>
     <div class="copy-center">
       <button id="copyFactorBtn" onclick="copyFactor()">Copy</button>
@@ -931,21 +959,21 @@ Next:
 <div id="gnaHighModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('gnaHighModal')">✖</span>
-    <h3>GNA High</h3>
-    <strong>Ref:</strong>
+    <h3>GNA High Risk No Cancel CBO</h3>
+    <strong>Referred for:</strong>
     <input id="gnaRef" placeholder="XXXX">
     <br><br>
-    <strong>Link:</strong>
+    <strong>Linkage:</strong>
     <input id="gnaLink" placeholder="XXXX">
     <br><br>
-    <strong>Ema:</strong>
+    <strong>Emp:</strong>
     <input id="gnaEma" placeholder="XXXX">
     <br><br>
-    <strong>CBR:</strong>
-    <input id="gnaCBR" placeholder="XXXX">
+    <strong>CBR/CSP(inq/major derogs/doc$):</strong>
+    <input id="gnaCBR" placeholder="inq / major derogs/ doc $ ">
     <br><br>
-    <strong>Doc:</strong>
-    <input id="gnaDoc" placeholder="XXXX">
+    <strong>Docs requested to verify income:</strong>
+    <input id="gnaDoc" placeholder="documents">
     <br><br>
     <div class="copy-center">
       <button id="copyGnaBtn" onclick="copyGnaHigh()">Copy</button>
@@ -957,18 +985,18 @@ Next:
 <div id="gnaFfiModal" class="ffi-modal">
   <div class="ffi-content">
     <span class="close-btn" onclick="closeTemplate('gnaFfiModal')">✖</span>
-    <h3>GNA FFI</h3>
-    <strong>DOC:</strong>
-    <input id="gnaDocFfi" placeholder="XXXX">
+    <h3>GNA FFI-Review</h3>
+    <strong>DOC Verify/Visual Checks Passed:</strong>
+    <input id="gnaDocFfi" placeholder="yes/no">
     <br><br>
-    <strong>60%:</strong>
-    <input id="gna60" placeholder="XXXX">
+    <strong>60% PROXY INCOME:</strong>
+    <input id="gna60" placeholder="proxy">
     <br><br>
-    <strong>End:</strong>
-    <input id="gnaEnd" placeholder="XXXX">
+    <strong>Ending Balance:</strong>
+    <input id="gnaEnd" placeholder="$">
     <br><br>
     <strong>Outcome:</strong>
-    <input id="gnaOutcome" placeholder="XXXX">
+    <input id="gnaOutcome" placeholder="result">
     <br><br>
     <div class="copy-center">
       <button id="copyGnaFfiBtn" onclick="copyGnaFfi()">Copy</button>
@@ -1276,9 +1304,9 @@ function updateCalendar(date){
 //// FDL QUICK COPY           (CLIPBOARD)
 ////////////////////////////////////////////////////
 function copyFDL(){
-let text=`===========FDL===========
-Asdfasdfasdfasdfasdfasdfasdfasdfasd
-=======================`;
+let text=`**************** FDL ISSUED ****************
+Do not cancel account (C1) until FDL is expired
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("fdlBtn"));
 }
@@ -1316,25 +1344,25 @@ function setFirstTitle(value){
     if(value==="return")tReturn.classList.add("title-selected");
 }
 function copyFirst(){
-let text=`===========${firstTitle}===========
-1.- ${f1.value}
-2.- ${f2.value}
-3.- ${f3.value}
-4.- ${f4.value}
-5.- ${f5.value}
-6.- ${f6.value}
-=======================`;
+let text=`********  ${firstTitle}  ********
+* Linkages: ${f1.value}
+* Concerning Spend:${f2.value}
+* CBR:${f3.value}
+* CBO indicators:  ${f4.value}
+* Reason for Decision: ${f5.value}
+* Next steps: ${f6.value}
+************************************************`;
 navigator.clipboard.writeText(text);
 }
 function copyFirst(){
-let text=`===========${firstTitle}===========
-1.- ${f1.value}
-2.- ${f2.value}
-3.- ${f3.value}
-4.- ${f4.value}
-5.- ${f5.value}
-6.- ${f6.value}
-=======================`;
+let text=`********  ${firstTitle}  ********
+* Linkages: ${f1.value}
+* Concerning Spend: ${f2.value}
+* CBR: ${f3.value}
+* CBO indicators: ${f4.value}
+* Reason for Decision: ${f5.value}
+* Next steps: ${f6.value}
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyFirstBtn"));
 }
@@ -1353,14 +1381,14 @@ resetFeedback(document.getElementById("resetFirstBtn"));
 //// CBR TEMPLATE
 ////////////////////////////////////////////////////
 function copyCBR(){
-let text=`===========CBR===========
-Type: ${cbrType.value} *CBR ${cbrType.value}
-AVAIL: $${cbrAvail.value}  *CR: $${cbrCR.value} *DC: ${cbrDC.value} %
-*OPEN ${cbrOpen.value} * DATE : ${cbrDate.value}
-*DATE OF : ${cbrDateOf.value}
-*INQUIR: ${cbrInquir.value} *FIC: ${cbrFic.value}
-*MISC: ${cbrMisc.value} ON FILE: ${cbrFile.value}
-=======================`;
+let text=`**************** CBR Review ****************
+Type of CBR and date: ${cbrType.value} *CBR: ${cbrType.value}
+AVAIL CR: $${cbrAvail.value}  *UTILISED CR: $${cbrCR.value} *DC: ${cbrDC.value} %
+*# OF OPEN & ACTIVE TRADES ${cbrOpen.value} * DATE OF OLDEST TRDE: ${cbrDate.value}
+*DATE OF NEWEST TRDE: ${cbrDateOf.value}
+*INQUIRIES: ${cbrInquir.value} *FIC: ${cbrFic.value}
+*MISCELLANEOUS INFO: ${cbrMisc.value} ON FILE SINCE: ${cbrFile.value}
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyCBRBtn"));
 }
@@ -1404,14 +1432,14 @@ function setProxy(value){
     if(value==="Self-employee") proxySelfEmployee.classList.add("proxy-yellow");
 }
 function copyFFI(){
-let text=`===========FFI===========
-Doc Verify: ${docVerify}
-60% Proxy: ${selectedProxy}, CM Prox: ${percentInput.value}% , Reported: $${reportInput.value}
-Payment show: ${payStatus}
-Bank: ${reportInput.value}
-Ending: $${showingInput.value}, Month1: $${month1Input.value}, Month2: $${month2Input.value}
+let text=`**************** FFI/BI REVIEW ****************
+Doc Verify/Visual Checks Passed: ${docVerify}
+60% Proxy Income(Y/N): ${selectedProxy}, CM Prox: ${percentInput.value}% , Reported: $${reportInput.value}
+AMEX Payment showing: ${payStatus}
+Bank/Account Holder/Number: ${reportInput.value}
+Ending Balance: $${showingInput.value}, ${month1Input.value}, ${month2Input.value}
 Outcome: ${outcomeInput.value}
-=======================`;
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyFFIBtn"));
 }
@@ -1472,12 +1500,12 @@ enableAutoResize();
 //// PAYSTUBS TEMPLATE
 ////////////////////////////////////////////////////
 function copyPay(){
-let text=`===========Paystubs===========
+let text=`**************** FFI - Paystubs ****************
 *Payslips:${payPayslips.value}
-*Business: ${payBusiness.value}
-*Recip: ${payRecip.value}
-*Gross : ${payGross.value}
-=======================`;
+*Business Name/Add: ${payBusiness.value}
+*Recipient: ${payRecip.value}
+*Gross Pay: ${payGross.value}
+************************************************`;
 +
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyPayBtn"));
@@ -1503,14 +1531,14 @@ if(value==="sole proprietorship") legalSole.classList.add("proxy-green");
 if(value==="partnership") legalPartner.classList.add("proxy-green");
 }
 function copyBusiness(){
-let text=`===========Business===========
-*Date: ${busDate.value}
-*Business: ${busBusiness.value}
-*Name: ${busName.value}
-*Reg #: ${busReg.value}
-Legal : ${legalType}
-Business type: ${busType.value}
-=======================`;
+let text=`********  Master Business License  ********
+*Date issued: ${busDate.value}
+*Business Name: ${busBusiness.value}
+*Legal Name: ${busName.value}
+*Registration #: ${busReg.value}
+*Legal Business Entity: ${legalType}
+*Business type: ${busType.value}
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyBusBtn"));
 }
@@ -1531,12 +1559,12 @@ resetFeedback(document.getElementById("resetBusBtn"));
 //// INCORP TEMPLATE
 ////////////////////////////////////////////////////
 function copyIncorp(){
-let text=`===========Incorp===========
-*Business on: ${incBusinessOn.value}
-*Business name: ${incBusinessName.value}
-*Incorp #: ${incNumber.value}
-*Direc: ${incDirec.value}
-=======================`;
+let text=`********  Certificate of Incorporation  ********
+* Business incorporated on: ${incBusinessOn.value}
+* Business name: ${incBusinessName.value}
+* Incorporation Number: ${incNumber.value}
+* Director/s: ${incDirec.value}
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyIncorpBtn"));
 }
@@ -1553,14 +1581,14 @@ resetFeedback(document.getElementById("resetIncorpBtn"));
 //// ASSES TEMPLATE
 ////////////////////////////////////////////////////
 function copyAsses(){
-let text=`===========ASSES===========
+let text=`********  Personal Notices of Assesment  ********
 *Year: ${assYear.value}
 *Date: ${assDate.value}
 *Bus: ${assBus.value}
 *Bus #: ${assBusNum.value}
 *Part 1: ${assPart.value}
 *Result: ${assResult.value}
-=======================`;
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyAssBtn"));
 }
@@ -1579,11 +1607,11 @@ resetFeedback(document.getElementById("resetAssBtn"));
 //// INCOMPLETE TEMPLATE
 ////////////////////////////////////////////////////
 function copyIncomplete(){
-let text=`===========Incomplete===========
-*We : ${incWe.value}
-*Dead: ${incDead.value}
-*Additional: ${incAdditional.value}
-=======================`;
+let text=`********  Incomplete document review   ********
+* We need: ${incWe.value}
+* Deadline: ${incDead.value}
+* Additional Comments: ${incAdditional.value}
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyIncBtn"));
 }
@@ -1613,10 +1641,10 @@ if(value==="pay") ftPay.classList.add("title-selected");
 if(value==="return") ftReturn.classList.add("title-selected");
 }
 function copyFinal(){
-let text=`===========${finalTitle}===========
-*Reason : ${finalReason.value}
-*Next : ${finalNext.value}
-=======================`;
+let text=`********  ${finalTitle}  ********
+* Reason for decision: ${finalReason.value}
+* Next steps: ${finalNext.value}
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyFinalBtn"));
 }
@@ -1637,18 +1665,18 @@ resetFeedback(document.getElementById("resetFinalBtn"));
 //// FACTOR TEMPLATE
 ////////////////////////////////////////////////////
 function copyFactor(){
-let text=`===========Factor===========
-*SE : ${facSE.value}
-*Name: ${facName.value}
-*Lname : ${facLname.value}
-*Date : ${facDate.value}
-*Card : ${facCard.value}
-*CM : ${facCM.value}
-*Conf : ${facConf.value}
-*How : ${facHow.value}
-*Total : ${facTotal.value}
-*Rec : ${facRec.value}
-=======================`;
+let text=`******** Factoring High Risk Concerns ********
+* SE #: ${facSE.value}
+* Name: ${facName.value}
+* Legal name: ${facLname.value}
+* Date opened: ${facDate.value}
+* Card links: ${facCard.value}
+* CM name: ${facCM.value}
+* Confirmed linked to SE : ${facConf.value}
+* How: ${facHow.value}
+* Total Factored Charges: ${facTotal.value}
+* RECOMMENDATION: ${facRec.value}
+************************************************`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyFactorBtn"));
 }
@@ -1671,12 +1699,12 @@ resetFeedback(document.getElementById("resetFactorBtn"));
 //// GNA HIGH TEMPLATE
 ////////////////////////////////////////////////////
 function copyGnaHigh(){
-let text=`***High**
-Ref : ${gnaRef.value}
-Link: ${gnaLink.value}
-Ema: ${gnaEma.value}
-CBR: ${gnaCBR.value}
-Doc: ${gnaDoc.value}
+let text=`***High Risk No Cancel CBO**
+Referred for  ${gnaRef.value}
+Linkage ${gnaLink.value}
+Emp: ${gnaEma.value}
+CBR/CSP: ${gnaCBR.value}
+Docs requested to verify income: ${gnaDoc.value}
 **********`;
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyGnaBtn"));
@@ -1695,10 +1723,10 @@ resetFeedback(document.getElementById("resetGnaBtn"));
 //// GNA FFI TEMPLATE
 ////////////////////////////////////////////////////
 function copyGnaFfi(){
-let text=`***FFI-R**
-DOC: ${gnaDocFfi.value}
-60%: ${gna60.value}
-End: ${gnaEnd.value}
+let text=`***FFI-Review**
+DOC Verify/Visual Checks Passed: ${gnaDocFfi.value}
+60% PROXY income: ${gna60.value}
+Ending Balance: ${gnaEnd.value}
 Outcome: ${gnaOutcome.value}
 **********`;
 navigator.clipboard.writeText(text);
