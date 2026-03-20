@@ -139,7 +139,6 @@ body.dark .ffi-content h3{
     color:#007aff;
     opacity:0.95;
 }
-}
 body.dark .ffi-content input{
     background:rgba(255,255,255,0.1);
     border:1px solid rgba(255,255,255,0.2);
@@ -658,6 +657,35 @@ font-size: clamp(18px, 4vw, 28px);
     overflow-x:auto;      /* 🔥 permite scroll */
     white-space:nowrap;   /* 🔥 no corta números */
 }
+row.innerHTML = `
+<strong>Bank:</strong>
+<input type="text" class="bankInput" placeholder="Bank">
+
+<strong>Ending: $</strong>
+<input type="text" class="endingInput" placeholder="Balance">
+
+<strong>M1: $</strong>
+<input type="text" class="monthInput">
+
+<strong>M2: $</strong>
+<input type="text" class="monthInput">
+
+<strong>M3: $</strong>
+<input type="text" class="monthInput">
+
+<button type="button" onclick="removeRow(this)">x</button>
+`;
+function removeRow(btn){
+    const rows = document.querySelectorAll(".ffi-row");
+
+    if(rows.length <= 1) return; // 🔥 nunca borra la base
+
+    const row = btn.closest(".ffi-row");
+    row.remove();
+}
+
+
+<script>
 /* ===============                  =============== */
 /* ===============       BODY       =============== */
 /* ===============                  =============== */
@@ -890,27 +918,40 @@ loading="lazy">
     <button id="proxyYes" onclick="setProxy('Yes')">Yes</button>
     <button id="proxyNo" onclick="setProxy('No')">No</button>
     <button id="proxySelfEmployee" onclick="setProxy('Self-employee')">Self-employee</button>
-       <input type="number" id="percentInput" placeholder="%">
+       <input type="text" id="percentInput" placeholder="%">
     <strong>%, Reported: $</strong>
-       <input type="number" id="reportInput" placeholder="$">
+       <input type="text" id="reportInput" placeholder="$">
     <!-- INPUTS -->
     <br><br>
     <strong>Payment show: $</strong>
       <button id="payYes" onclick="setPayment('Yes')">Yes</button>
       <button id="payNo" onclick="setPayment('No')">No</button>
     <br><br>
-    <strong>Bank: </strong>
-      <input type="text" id="bankInput" placeholder="Bank,">
-    <br><br>
-    <!-- Ending + Month1 + Month2 en la misma línea -->
-    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-    <strong>Ending: $</strong>
-    <input type="text" id="showingInput" placeholder="Balance">
-    <strong>Month1: $</strong>
-    <input type="text" id="month1Input" placeholder="Month">
-    <strong>Month2: $</strong>
-    <input type="text" id="month2Input" placeholder="Month">
-    </div>
+<!-- Ending + Month1 + Month2 + Month 3en la misma línea -->
+<div id="monthsContainer" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+
+<div class="ffi-row" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+
+<strong>Bank/Account Holder/Number:</strong>
+<input type="text" class="bankInput" placeholder="Bank">
+
+<strong>Ending: $</strong>
+<input type="text" class="endingInput" placeholder="Balance">
+
+<strong>Month1: $</strong>
+<input type="text" class="monthInput" placeholder="Month">
+
+<strong>Month2: $</strong>
+<input type="text" class="monthInput" placeholder="Month">
+
+<strong>Month3: $</strong>
+<input type="text" class="monthInput" placeholder="Month">
+
+</div>
+
+<button type="button" onclick="addMonth()">+</button>
+
+</div>
     
     <br><br>
     <!-- Outcome en nueva línea -->
@@ -1189,29 +1230,7 @@ loading="lazy">
     </div>
   </div>
 </div>
-<!-- ================= GNA FFI MODAL ================= -->
-<div id="gnaFfiModal" class="ffi-modal">
-  <div class="ffi-content">
-    <span class="close-btn" onclick="closeTemplate('gnaFfiModal')">✖</span>
-    <h2>GNA FFI</h2>
-    <strong>DOC:</strong>
-    <input id="gnaDocFfi" placeholder="XXXX">
-    <br><br>
-    <strong>60%:</strong>
-    <input id="gna60" placeholder="XXXX">
-    <br><br>
-    <strong>End:</strong>
-    <input id="gnaEnd" placeholder="XXXX">
-    <br><br>
-    <strong>Outcome:</strong>
-    <input id="gnaOutcome" placeholder="XXXX">
-    <br><br>
-    <div class="copy-center">
-      <button id="copyGnaFfiBtn" onclick="copyGnaFfi()">Copy</button>
-      <button id="resetGnaFfiBtn" onclick="resetGnaFfi()">Reset</button>
-    </div>
-  </div>
-</div>
+
 <!---------------- NOTE PANEL --------------------->
 <div id="notePanel" class="note-panel">
 
@@ -1617,39 +1636,84 @@ function setProxy(value){
     if(value==="Self-employee") proxySelfEmployee.classList.add("proxy-yellow");
 }
 function copyFFI(){
+
+let rows = document.querySelectorAll(".ffi-row");
+
+let bankSection = [];
+let endingSection = [];
+
+rows.forEach(row => {
+
+    let bank = row.querySelector(".bankInput")?.value || "";
+    let ending = row.querySelector(".endingInput")?.value || "";
+
+    let months = Array.from(row.querySelectorAll(".monthInput"))
+        .map(i => i.value)
+        .filter(v => v)
+        .join(", ");
+
+    if(bank) bankSection.push(bank);
+
+    if(ending || months){
+        endingSection.push(`$${ending}${months ? ", " + months : ""}`);
+    }
+
+});
+
 let text=`**************** FFI/BI REVIEW ****************
 Doc Verify/Visual Checks Passed: ${docVerify}
 60% Proxy Income(Y/N): ${selectedProxy}, CM Prox: ${percentInput.value}% , Reported: $${reportInput.value}
 AMEX Payment showing: ${payStatus}
-Bank/Account Holder/Number: ${reportInput.value}
-Ending Balance: $${showingInput.value}, ${month1Input.value}, ${month2Input.value}
+Bank/Account Holder/Number: ${bankSection.join(" | 2do: | ")}
+Ending Balance: ${endingSection.join(" | 2do: | ")}
 Outcome: ${outcomeInput.value}
 ************************************************`;
+
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyFFIBtn"));
 }
+
+
+
+
+
+
+
 function resetFFI(){
-selectedProxy="";
-docVerify="";
-payStatus="";
-[
-"percentInput",
-"reportInput",
-"bankInput",
-"showingInput",
-"month1Input",
-"month2Input",
-"outcomeInput"
-].forEach(id=>document.getElementById(id).value="");
-proxyYes.classList.remove("proxy-green");
-proxyNo.classList.remove("proxy-red");
-proxySelfEmployee.classList.remove("proxy-yellow");
-docYes.classList.remove("proxy-green");
-docNo.classList.remove("proxy-red");
-payYes.classList.remove("proxy-green");
-payNo.classList.remove("proxy-red");
-resetFeedback(document.getElementById("resetFFIBtn"));
+    selectedProxy="";
+    docVerify="";
+    payStatus="";
+
+    // limpiar inputs normales
+    [
+        "percentInput",
+        "reportInput",
+        "bankInput",
+        "showingInput",
+        "outcomeInput"
+    ].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.value="";
+    });
+
+    // 🔥 limpiar meses SIN romper el botón +
+    document.querySelectorAll(".monthInput").forEach(i => i.value = "");
+
+    // reset botones visuales
+    proxyYes.classList.remove("proxy-green");
+    proxyNo.classList.remove("proxy-red");
+    proxySelfEmployee.classList.remove("proxy-yellow");
+    docYes.classList.remove("proxy-green");
+    docNo.classList.remove("proxy-red");
+    payYes.classList.remove("proxy-green");
+    payNo.classList.remove("proxy-red");
+
+    resetFeedback(document.getElementById("resetFFIBtn"));
+
+    // 🔥 reset contador (IMPORTANTE)
+    monthCount = 3;
 }
+
 let docVerify="";
 function setDocVerify(value){
     docVerify=value;
@@ -1657,6 +1721,7 @@ function setDocVerify(value){
     docNo.classList.remove("proxy-green","proxy-red");
     if(value==="Yes") docYes.classList.add("proxy-green");
     if(value==="No") docNo.classList.add("proxy-red");
+    
 }
 
 ////////////////////////////////////////////////////
@@ -1680,6 +1745,50 @@ function proximamente(){
     btn.disabled = true; // opcional: lo desactiva
 }
 enableAutoResize();
+let monthCount = 3;
+
+
+function addMonth(){
+
+    const container = document.getElementById("monthsContainer");
+    const button = container.querySelector("button");
+
+    const row = document.createElement("div");
+    row.className = "ffi-row"; // 🔥 importante
+    row.style.display = "flex";
+    row.style.gap = "10px";
+    row.style.flexWrap = "wrap";
+    row.style.marginTop = "8px";
+
+    row.innerHTML = `
+    <strong>2doBank info:</strong>
+    <input type="text" class="bankInput" placeholder="Bank">
+
+    <strong>Ending:</strong>
+    <input type="text" class="endingInput" placeholder="Balance">
+
+    <strong>Month1:</strong>
+    <input type="text" class="monthInput" placeholder="Month">
+
+    <strong>Month2:</strong>
+    <input type="text" class="monthInput" placeholder="Month">
+
+    <strong>Month3:</strong>
+    <input type="text" class="monthInput" placeholder="Month">
+
+        <button type="button" onclick="removeRow(this)">x</button>
+    `;
+
+    container.insertBefore(row, button);
+
+    enableAutoResize();
+}
+function removeRow(btn){
+    const row = btn.closest(".ffi-row");
+    if(row){
+        row.remove();
+    }
+}
 
 ////////////////////////////////////////////////////
 //// PAYSTUBS TEMPLATE
@@ -1691,7 +1800,6 @@ let text=`**************** FFI - Paystubs ****************
 *Recipient: ${payRecip.value}
 *Gross Pay: ${payGross.value}
 ************************************************`;
-+
 navigator.clipboard.writeText(text);
 copyFeedback(document.getElementById("copyPayBtn"));
 }
