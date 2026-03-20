@@ -405,7 +405,7 @@ animation:pop .25s ease;
 font-size:18px;
 font-weight:600;
 margin-bottom:8px;
-color:#555;
+color:#007aff;   /* 🔥 azul principal */
 }
 #dateResult{
 text-align:center;
