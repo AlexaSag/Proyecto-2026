@@ -33,6 +33,38 @@ body.dark{
     --text:#ffffff;
     --input:#3a3a3c;
 }
+/* ===== DARK MODE CALENDAR ===== */
+body.dark .flatpickr-calendar{
+    background:#1c1c1e !important;
+    border:1px solid rgba(255,255,255,0.1);
+    color:white !important;
+}
+
+body.dark .flatpickr-day{
+    color:white;
+}
+
+body.dark .flatpickr-day:hover{
+    background:#007aff;
+    color:white;
+}
+
+body.dark .flatpickr-day.selected{
+    background:#007aff;
+    color:white;
+}
+
+body.dark .flatpickr-current-month{
+    color:white;
+}
+
+body.dark .flatpickr-weekday{
+    color:#aaa;
+}
+
+body.dark .flatpickr-months{
+    background:transparent;
+}
 
 body{
     font-family:-apple-system,BlinkMacSystemFont,sans-serif;
