@@ -467,9 +467,10 @@ margin:3px;
     transform:scale(.95);
 }
 .note-panel textarea{
-width:100%;
+width:500px;
+max-width:90vw;    /* responsive */
 min-height:80px;
-max-height:350px;
+max-height:700px;
 border:none;
 border-radius:12px;
 padding:10px;
@@ -542,6 +543,9 @@ transition:all .2s ease;
 }
 
 .ffi-content{
+width:fit-content;
+    min-width:550px;
+    max-width:800px;
     line-height:.2;   /* 🔥 reduce todo el espacio vertical */
 }
 .ffi-content strong{
@@ -708,12 +712,29 @@ row.innerHTML = `
 <button type="button" onclick="removeRow(this)">x</button>
 `;
 function removeRow(btn){
-    const rows = document.querySelectorAll(".ffi-row");
 
-    if(rows.length <= 1) return; // 🔥 nunca borra la base
+    const container = btn.closest("#monthsContainer");
+    const rows = container.querySelectorAll(".ffi-row");
+
+    if(rows.length <= 1) return; // 🔥 deja siempre 1
 
     const row = btn.closest(".ffi-row");
     row.remove();
+}
+textarea{
+    width:100%;
+    min-height:40px;
+    border-radius:10px;
+    padding:8px;
+    resize:none;
+    overflow:hidden;
+    font-family:inherit;
+    font-size:14px;
+    background:var(--input);
+    color:var(--text);
+    border:1px solid #d1d1d6;
+    display:block;
+    margin-top:10px; 
 }
 
 
@@ -888,7 +909,7 @@ loading="lazy">
     * Concerning Spend: <input id="f2"><br><br>
     * CBR: <input id="f3"><br><br>
     * CBO indicators: <input id="f4"><br><br>
-    * Reason for Decision: <input id="f5"><br><br>
+    * Reason for Decision: <textarea id="f5" placeholder="Write details..."></textarea>
     * Next steps: <input id="f6">
     <div class="copy-center">
 <button id="copyFirstBtn" onclick="copyFirst()">Copy FFI</button>
@@ -987,9 +1008,9 @@ loading="lazy">
     
     <br><br>
     <!-- Outcome en nueva línea -->
-    <strong>Outcome: </strong>
-    <input type="text" id="outcomeInput" placeholder="Outcome">
-    <br><br>
+    <strong>Outcome:</strong>
+<textarea id="outcomeInput" placeholder="Outcome"></textarea>
+<br><br>
     <!-- BUTTONS -->
     <div class="copy-center">
       <button id="copyFFIBtn" onclick="copyFFI()">Copy</button>
@@ -1131,13 +1152,13 @@ loading="lazy">
     <span class="close-btn" onclick="closeTemplate('incompleteModal')">✖</span>
     <h2>Incomplete - We need</h2>
     <strong>* We need:</strong>
-    <input id="incWe" placeholder="XXXX">
+   <textarea id="incWe" placeholder="information"></textarea>
     <br><br>
     <strong>* Deadline:</strong>
     <input id="incDead" placeholder="XXXX">
     <br><br>
     <strong>*Additional Comments:</strong>
-    <input id="incAdditional" placeholder="XXXX">
+   <textarea id="incAdditional" placeholder="information or NA"></textarea>
     <br><br>
     <div class="copy-center">
       <button id="copyIncBtn" onclick="copyIncomplete()">Copy</button>
@@ -1160,10 +1181,10 @@ loading="lazy">
 <button id="ftReturn" onclick="setFinalTitle('NO CBO/CA CONCERNS - RETURN TO CREDIT')">Return to CREDIT</button>
 <br><br>
 * Reason for desicion:
-<input id="finalReason">
+<textarea id="finalReason" placeholder="Write details..."></textarea>
 <br><br>
 * Next steps:
-<input id="finalNext">
+<textarea id="finalNext"></textarea>
 <br><br>
 <div class="copy-center">
 <button id="copyFinalBtn" onclick="copyFinal()">Copy</button>
@@ -1706,32 +1727,37 @@ copyFeedback(document.getElementById("copyFFIBtn"));
 }
 
 
-
-
-
-
-
 function resetFFI(){
+
     selectedProxy="";
     docVerify="";
     payStatus="";
 
-    // limpiar inputs normales
+    // 🔥 limpiar inputs normales (IDs reales)
     [
         "percentInput",
         "reportInput",
-        "bankInput",
-        "showingInput",
         "outcomeInput"
     ].forEach(id=>{
         const el = document.getElementById(id);
         if(el) el.value="";
     });
 
-    // 🔥 limpiar meses SIN romper el botón +
-    document.querySelectorAll(".monthInput").forEach(i => i.value = "");
+    // 🔥 limpiar TODOS los banks y endings (CLASES)
+    document.querySelectorAll(".bankInput, .endingInput")
+    .forEach(i => i.value = "");
 
-    // reset botones visuales
+    // 🔥 limpiar meses
+    document.querySelectorAll(".monthInput")
+    .forEach(i => i.value = "");
+
+    // 🔥 eliminar filas extra (dejar solo la primera)
+    document.querySelectorAll("#monthsContainer .ffi-row")
+    .forEach((row, index)=>{
+        if(index !== 0) row.remove();
+    });
+
+    // 🔥 reset botones visuales
     proxyYes.classList.remove("proxy-green");
     proxyNo.classList.remove("proxy-red");
     proxySelfEmployee.classList.remove("proxy-yellow");
@@ -1740,11 +1766,14 @@ function resetFFI(){
     payYes.classList.remove("proxy-green");
     payNo.classList.remove("proxy-red");
 
-    resetFeedback(document.getElementById("resetFFIBtn"));
-
-    // 🔥 reset contador (IMPORTANTE)
+    // 🔥 reset contador
     monthCount = 3;
+
+    resetFeedback(document.getElementById("resetFFIBtn"));
 }
+
+
+
 
 let docVerify="";
 function setDocVerify(value){
@@ -1759,6 +1788,12 @@ function setDocVerify(value){
 ////////////////////////////////////////////////////
 //// FFI MODAL CONTROL
 ////////////////////////////////////////////////////
+document.querySelectorAll("textarea").forEach(area=>{
+    area.addEventListener("input", function(){
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
+    });
+});
 function toggleFFI(){
     const modal = document.getElementById("ffiModal");
 
@@ -1815,12 +1850,7 @@ function addMonth(){
 
     enableAutoResize();
 }
-function removeRow(btn){
-    const row = btn.closest(".ffi-row");
-    if(row){
-        row.remove();
-    }
-}
+
 
 ////////////////////////////////////////////////////
 //// PAYSTUBS TEMPLATE
@@ -2133,16 +2163,28 @@ function createCustom(){
 //// RESET ALL TEMPLATES
 ////////////////////////////////////////////////////
 function resetAllTemplates(){
-// limpia todos los inputs de los modales
-document.querySelectorAll(".ffi-modal input").forEach(input=>{
-    input.value="";
+
+// 🔹 limpiar TODOS los inputs y textareas
+document.querySelectorAll(".ffi-modal input, .ffi-modal textarea")
+.forEach(el=>{
+    el.value="";
 });
-// limpia botones seleccionados
+
+// 🔹 eliminar filas dinámicas (dejando solo la primera)
+document.querySelectorAll("#monthsContainer .ffi-row").forEach((row, index)=>{
+    if(index !== 0) row.remove(); // deja solo la base
+});
+
+// 🔹 limpiar meses de la fila base
+document.querySelectorAll(".monthInput").forEach(i=> i.value="");
+
+// 🔹 reset visual botones
 document.querySelectorAll(".proxy-green,.proxy-red,.proxy-yellow,.title-selected")
 .forEach(btn=>{
     btn.classList.remove("proxy-green","proxy-red","proxy-yellow","title-selected");
 });
-// reset variables usadas en templates
+
+// 🔹 reset variables globales
 icList=[];
 selectedProxy="";
 docVerify="";
@@ -2150,9 +2192,15 @@ payStatus="";
 firstTitle="";
 finalTitle="";
 legalType="";
-// limpia resultado IC
+
+// 🔹 limpiar resultado IC
 const resultIC = document.getElementById("resultIC");
 if(resultIC) resultIC.innerText="";
+
+// 🔹 reset contador FFI
+monthCount = 3;
+
+// 🔹 feedback visual
 resetFeedback(document.getElementById("resetAllTemplatesBtn"));
 }
 
