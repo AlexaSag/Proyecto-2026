@@ -1,4 +1,4 @@
-rom http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
 class MiServidor(BaseHTTPRequestHandler):
 
