@@ -49,7 +49,8 @@ import os
 
 @app.route("/download")
 def download():
-    file_path = os.path.join(os.getcwd(), "DONE.py.zip")
+    base_dir = os.path.dirname(__file__)
+    file_path = os.path.join(base_dir, "done.py.zip")
     return send_file(file_path, as_attachment=True)
 
 
