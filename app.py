@@ -1,15 +1,11 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from flask import Flask, send_file
 
-class MiServidor(BaseHTTPRequestHandler):
+app = Flask(__name__)
 
-    def do_GET(self):
-        if self.path == "/":
-            self.enviar_inicio()
-        else:
-            self.enviar_404()
-
-    def enviar_inicio(self):
-        html = """<!DOCTYPE html>
+@app.route("/")
+def inicio():
+    return """
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -2949,21 +2945,14 @@ document.addEventListener("keydown", function(e){
 </body>
 </html>
 """
-        self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
-        self.end_headers()
-        self.wfile.write(html.encode("utf-8"))
 
-    def enviar_404(self):
-        self.send_response(404)
-        self.end_headers()
-        self.wfile.write(b"No encontrado")
+@app.route("/download")
+def download():
+    return send_file("s.a.brain.py.zip", as_attachment=True)
 
 
 if __name__ == "__main__":
-    servidor = HTTPServer(("127.0.0.1", 9000), MiServidor)
-    print("Servidor corriendo en http://localhost:9000")
-    servidor.serve_forever()
+    app.run(debug=True)
 
 
 
