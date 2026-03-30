@@ -1,5 +1,5 @@
-
 from flask import Flask, send_file
+import os
 
 app = Flask(__name__)
 
@@ -47,8 +47,6 @@ button{
 
 @app.route("/download")
 def download():
-    return send_file("correct1.py.zip", as_attachment=True)
-
-
-if __name__ == "__main__":
-    app.run(debug=True). 
+    base_dir = os.path.dirname(__file__)
+    file_path = os.path.join(base_dir, "correct1.py.zip")
+    return send_file(file_path, as_attachment=True)
