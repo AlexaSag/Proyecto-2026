@@ -45,9 +45,12 @@ button{
 </html>
 """
 
+import os
+
 @app.route("/download")
 def download():
-    return send_file("DONE.py.zip", as_attachment=True)
+    file_path = os.path.join(os.getcwd(), "DONE.py.zip")
+    return send_file(file_path, as_attachment=True)
 
 
 if __name__ == "__main__":
