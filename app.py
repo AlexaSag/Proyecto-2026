@@ -47,7 +47,7 @@ button{
 
 @app.route("/download")
 def download():
-    return send_file("correct1.py.zip", as_attachment=True)
+    return send_file("DONE.py.zip", as_attachment=True)
 
 
 if __name__ == "__main__":
